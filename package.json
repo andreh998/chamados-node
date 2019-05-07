@@ -1,0 +1,32 @@
+{
+  "name": "os-node",
+  "version": "1.0.0",
+  "description": "sistema de chamados",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreh998/os-node.git"
+  },
+  "author": "andre hoffmann",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andreh998/os-node/issues"
+  },
+  "homepage": "https://github.com/andreh998/os-node#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "consign": "^0.1.6",
+    "cookie-parser": "^1.4.4",
+    "dotenv-safe": "^6.1.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "express-validator": "^5.3.1",
+    "helmet": "^3.18.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.17.1"
+  }
+}
