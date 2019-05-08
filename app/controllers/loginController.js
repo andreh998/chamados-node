@@ -1,3 +1,6 @@
+
+var jwt = require('jsonwebtoken');
+
 module.exports.index = function(application, req, res){
 
     res.render('login', {campos: {}, erros: {}});
@@ -25,17 +28,40 @@ module.exports.validaLogin = function(application, req, res){
     LoginModel.buscar(dados.username, function(err, result){
         if(err){
             console.log(err);
-        }
-
-        if(result[0].senha === dados.password){
-            //CRIAR O TOKEN E A SESSAO ANTES DE MANDAR PRA HOME
-            res.redirect('/home');
-        } else {          
-            erro = [{msg: "Usuário ou senha inválido"}];
-            res.render('login', {campos: dados, erros: erro});
+            res.render('login', {campos: dados, erros: {}});
             return;
-        }
+        } else {
+            //crio uma variavel user com o resultado da busca
+            var user = result[0];
+            //crio a sessao
+            req.session.usuario = user;
 
+            if(result[0].senha === dados.password){
+                
+                var token = jwt.sign({user}, process.env.SECRET, {
+                    expiresIn: "2h"
+                });
+                /** 
+                 * Salvo o token em um cookie que será acessível para validações futuras
+                 * O httpOnly impede que o cookie seja acessado do lado do cliente
+                 * O secure indica ao navegador que só envie esse cookie em solicitações
+                 * https
+                 */
+                res.cookie('auth', token, {httpOnly: true});
+                res.redirect('/');
+            } else {          
+                erro = [{msg: "Usuário ou senha inválido"}];
+                res.render('login', {campos: dados, erros: erro});
+                return;
+            }
+        }
     });
 
+}
+
+module.exports.logout = function(application, req, res){
+    req.session.usuario = null;
+    //destrói o cookie com o token de atenticação
+    res.cookie('auth', {expires: Date.now()});
+    res.redirect('/login');
 }

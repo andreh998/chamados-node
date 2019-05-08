@@ -1,6 +1,9 @@
 module.exports = function(application){
     
-    application.get('/', function(req, res){
+    //carrego a funcao que vrifica o token na variavel verificaToken
+    var verificaToken = application.app.controllers.tokenController;
+
+    application.get('/', verificaToken, function(req, res){
         application.app.controllers.homeController.index(application, req, res);
     });
 }

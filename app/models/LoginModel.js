@@ -3,8 +3,7 @@ function LoginModel(connection){
 }
 
 LoginModel.prototype.buscar = function(usuario, callback){
-    this._connection.query('SELECT * FROM usuarios WHERE usuario = ?', usuario, callback);
-    this.connection.close();
+    this._connection.query('SELECT * FROM usuarios WHERE login = ?', usuario, callback);
 }
 
 module.exports = function(){

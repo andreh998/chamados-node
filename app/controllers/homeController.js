@@ -1,3 +1,9 @@
 module.exports.index = function(application, req, res){
-    res.render('home');
+    
+    if(req.session.usuario){
+        res.render('home');
+    } else {
+        res.redirect('/logout');
+    }
+    
 }

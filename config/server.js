@@ -7,6 +7,8 @@ var expressSession = require('express-session');
 var helmet = require('helmet');
 var morgan = require('morgan');
 
+require('dotenv').load();
+
 var app = express();
 
 app.use(morgan('dev')); //mostra no console todas as requests
@@ -22,6 +24,7 @@ app.use(expressSession({
     secret: 'ishd892hd8ha8shd82hd2asd2h8d',
     resave: false,
     saveUninitialized: false
+    //cookie: { maxAge: 60000 }
 }));
 
 consign()

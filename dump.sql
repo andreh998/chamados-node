@@ -4,12 +4,16 @@ CREATE TABLE IF NOT EXISTS departamentos(
 	descricao VARCHAR(255)
 );
 
+INSERT INTO departamentos(nome, descricao) VALUES ('TI', 'Departamento de Tecnologia da Informação');
+
 CREATE TABLE IF NOT EXISTS perfis(
 	id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(255) NOT NULL,
     descricao VARCHAR(255),
     ativo CHAR(1) NOT NULL
 );
+
+INSERT INTO perfis(nome, descricao, ativo) VALUES ('Admin', 'Administrador do Sistema', 'S');
 
 CREATE TABLE IF NOT EXISTS usuarios(
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -25,6 +29,9 @@ CREATE TABLE IF NOT EXISTS usuarios(
 	data_ultima_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     data_exclusao TIMESTAMP
 );
+
+INSERT INTO usuarios (id_perfil, id_depto, nome, cpf, email, login, senha, ativo) VALUES 
+	(1, 1, 'André Hoffmann', '08535831967', 'andreh998@gmail.com', 'andre', 'andre@123', 'S');
 
 ALTER TABLE usuarios ADD CONSTRAINT fk_usuario_perfil FOREIGN KEY (id_perfil) REFERENCES perfis (id) ON DELETE CASCADE;
 ALTER TABLE usuarios ADD CONSTRAINT fk_usuario_departamento FOREIGN KEY (id_depto) REFERENCES departamentos (id) ON DELETE CASCADE;

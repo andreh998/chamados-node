@@ -1,4 +1,3 @@
-require('dotenv').load();
 
 var host = process.env._HOST;
 //var port = process.env._PORT;

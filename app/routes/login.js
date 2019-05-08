@@ -12,4 +12,8 @@ module.exports = function(application){
         application.app.controllers.loginController.validaLogin(application, req, res);
     });
 
+    application.get('/logout', function(req, res){
+        application.app.controllers.loginController.logout(application, req, res);
+    });
+
 }
