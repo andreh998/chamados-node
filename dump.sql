@@ -66,6 +66,15 @@ ALTER TABLE chamados ADD CONSTRAINT fk_chamado_depto_atribuido FOREIGN KEY (id_d
 ALTER TABLE chamados ADD CONSTRAINT fk_chamado_usuario_atribuido FOREIGN KEY (id_usuario_atribuido) REFERENCES usuarios (id) ON DELETE CASCADE;
 ALTER TABLE chamados ADD CONSTRAINT fk_chamado_assunto FOREIGN KEY (id_assunto) REFERENCES assuntos (id) ON DELETE CASCADE;
 
+CREATE TABLE IF NOT EXISTS anexos(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    id_chamado INT NOT NULL,
+    nome_arquivo VARCHAR(255) NOT NULL,
+    caminho_arquivo VARCHAR(255) NOT NULL
+)
+
+ALTER TABLE anexos ADD CONSTRAINT fk_anexos_chamados FOREIGN KEY (id_chamado) REFERENCES chamados (id) ON DELETE CASCADE;
+
 CREATE TABLE IF NOT EXISTS interacoes(
 	id INT PRIMARY KEY AUTO_INCREMENT,
     id_chamado INT NOT NULL,
