@@ -1,5 +1,13 @@
+
+
 module.exports = function(application){
-    application.get('/config/usuarios', function(req, res){
+    var verificaToken = application.app.controllers.tokenController;
+
+    application.get('/config/usuarios', verificaToken, function(req, res){
         application.app.controllers.usuariosController.index(application, req, res);
+    });
+
+    application.get('/config/usuarios/novo', verificaToken, function(req, res){
+        application.app.controllers.usuariosController.novo(application, req, res);
     });
 }

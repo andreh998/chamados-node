@@ -17,13 +17,13 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>Configuração de usuários</h5>
+                    <h5>Usuários</h5>
                 </div>
             </div>
             <hr>
             <div class="row">
                 <div class="col-md-1">
-                    <a class="btn btn-primary btn-sm" href="#" role="button">Novo »</a>
+                    <a class="btn btn-primary btn-sm" href="/config/usuarios/novo" role="button">Novo »</a>
                 </div>
             </div>
             <br>
@@ -44,36 +44,18 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <%for(key in usuarios){%>
                             <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>S</td>
-                            <td><img src="/icons/icons8-direita-30.png" alt=""></td>
+                                <th scope="row"><%= usuarios[key].id %></th>
+                                <td><%= usuarios[key].nome %></td>
+                                <td><%= usuarios[key].login %></td>
+                                <td><%= usuarios[key].email %></td>
+                                <td><%= usuarios[key].id_perfil %></td>
+                                <td><%= usuarios[key].id_depto %></td>
+                                <td><%= usuarios[key].ativo %></td>
+                                <td><img src="/icons/icons8-direita-30.png" alt=""></td>
                             </tr>
-                            <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@fat</td>
-                            <td>S</td>
-                            <td><img src="/icons/icons8-direita-30.png" alt=""></td>
-                            </tr>
-                            <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>N</td>
-                            <td><img src="/icons/icons8-direita-30.png" alt=""></td>
-                            </tr>
+                            <%}%>
                         </tbody>
                     </table>
                 </div>

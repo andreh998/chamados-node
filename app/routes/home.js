@@ -1,5 +1,6 @@
+
+
 module.exports = function(application){
-    
     //carrego a funcao que vrifica o token na variavel verificaToken
     var verificaToken = application.app.controllers.tokenController;
 
