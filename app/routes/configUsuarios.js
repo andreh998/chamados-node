@@ -10,4 +10,9 @@ module.exports = function(application){
     application.get('/config/usuarios/novo', verificaToken, function(req, res){
         application.app.controllers.usuariosController.novo(application, req, res);
     });
+
+    application.post('/config/usuarios/novo/gravar', verificaToken, function(req, res){
+        application.app.controllers.usuariosController.validar(application, req, res);
+    });
+
 }
