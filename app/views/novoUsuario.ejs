@@ -59,21 +59,19 @@
                         <div class="row form-group">
                             <div class="col-md-3">
                                 <label for="perfil col-md-3">Setor: </label>
-                                <select class="custom-select">                                
-                                    <option selected>TI</option>
-                                    <option value="1">Administrativo</option>
-                                    <option value="2">Comercial</option>
-                                    <option value="3">Vendas</option>
+                                <select class="custom-select" name="departamento">                                
+                                        <%for(key in departamentos){%>
+                                            <option value="<%= departamentos[key].id %>"><%= departamentos[key].nome %></option>
+                                        <%}%>
                                 </select>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="perfil col-md-3">Perfil: </label>
-                                <select class="custom-select">
-                                    <option selected>Admin</option>
-                                    <option value="1">Vendedor</option>
-                                    <option value="2">Adm</option>
-                                    <option value="3">Comprador</option>
+                                <select class="custom-select" name="perfil">
+                                    <%for(key in perfis){%>
+                                    <option value="<%= perfis[key].id %>"><%= perfis[key].nome %></option>
+                                    <%}%>
                                 </select>
                             </div>
                         </div>

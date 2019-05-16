@@ -13,7 +13,32 @@ module.exports.index = function(application, req, res){
 }
 
 module.exports.novo = function(application, req, res){
-    res.render('novoUsuario');
+
+    var p;
+
+    var connection = application.config.dbConnection;
+    var PerfilModel = new application.app.models.PerfilModel(connection);
+    PerfilModel.getAll(function(err, result){
+        if(!err){
+            console.log(result);
+        } else {
+            console.log(err);
+            res.render('/novoUsuario');
+        }
+    });
+
+    var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
+    DepartamentosModel.getAll(function(err, result){
+        //console.log(result);
+        if(!err){
+            return result;
+        } else {
+            console.log(err);
+            res.render('/novoUsuario');
+        }
+    });
+    //console.log(p);
+    res.render('novoUsuario', {perfis:  {}, departamentos:  {}});
 }
 
 module.exports.validar = function(application, req, res){
@@ -28,9 +53,12 @@ module.exports.validar = function(application, req, res){
 
     var erros = req.validationErrors();
 
+    console.log(usuario);
+
+    /*
     if(erros){
         res.render('novoUsuario')
     }
-
+    */
 }
 
