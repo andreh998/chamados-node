@@ -14,31 +14,39 @@ module.exports.index = function(application, req, res){
 
 module.exports.novo = function(application, req, res){
 
-    var p;
-
-    var connection = application.config.dbConnection;
-    var PerfilModel = new application.app.models.PerfilModel(connection);
-    PerfilModel.getAll(function(err, result){
-        if(!err){
-            console.log(result);
-        } else {
-            console.log(err);
-            res.render('/novoUsuario');
-        }
+    let promisePerfis = new Promise((resolve, reject) => {
+        var connection = application.config.dbConnection;
+        var PerfilModel = new application.app.models.PerfilModel(connection);
+        PerfilModel.getAll(function(err, result){
+            if(!err){                
+                resolve(result);
+            } else {
+                reject(err);
+                //res.render('novoUsuario');
+            }
+        });
     });
 
-    var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
-    DepartamentosModel.getAll(function(err, result){
-        //console.log(result);
-        if(!err){
-            return result;
-        } else {
-            console.log(err);
-            res.render('/novoUsuario');
-        }
-    });
-    //console.log(p);
-    res.render('novoUsuario', {perfis:  {}, departamentos:  {}});
+    let promiseDeptos = new Promise((resolve, reject) => {
+        var connection = application.config.dbConnection;
+        var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
+        DepartamentosModel.getAll(function(err, result){
+            if(!err){
+                resolve(result);
+            } else {
+                reject(err);
+            }
+        });
+    });    
+    
+    Promise.all([promisePerfis, promiseDeptos])
+        .then(([resultPromisePerfis, resultPromiseDeptos])=>{
+            res.render('novoUsuario', {perfis: resultPromisePerfis, departamentos: resultPromiseDeptos});
+        })
+        .catch((error)=>{
+            console.log(error);
+            res.render('configUsuarios', {usuarios: result});
+        });
 }
 
 module.exports.validar = function(application, req, res){
