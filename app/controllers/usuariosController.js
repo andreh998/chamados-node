@@ -61,7 +61,7 @@ module.exports.validar = function(application, req, res){
 
     var errors = req.validationErrors();
 
-    //console.log(usuario);
+    console.log(usuario);
     
     if(errors){
         let promisePerfis = new Promise((resolve, reject) => {
@@ -103,9 +103,20 @@ module.exports.validar = function(application, req, res){
 
     var crytoController = application.app.controllers.crytoController;
     var senhaCriptada = crytoController.crypt(usuario.senha);
-    console.log(senhaCriptada);
-    var senhaDecriptada = crytoController.decrypt(senhaCriptada);
-    console.log(senhaDecriptada);
+
+    var connection = application.config.dbConnection;
+    var UsuariosModel = new application.app.models.UsuariosModel(connection);
+    UsuariosModel.add(usuario.nome, usuario.cpf, usuario.email, usuario.login, senhaCriptada, usuario.ativo, usuario.departamento, usuario.perfil, function(err, result){
+        if(!err){
+            res.redirect('/config/usuarios');
+        } else {
+            console.log(err);            
+        }
+    });
+
+    //console.log(senhaCriptada);
+    //var senhaDecriptada = crytoController.decrypt(senhaCriptada);
+    //console.log(senhaDecriptada);
 
 }
 
