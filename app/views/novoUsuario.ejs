@@ -27,24 +27,59 @@
                     <form action="/config/usuarios/novo/gravar" method="POST">
                         <div class="form-group">
                             <label for="nome">Nome:</label>
-                            <input type="text" name="nome" id="nome" value="" class="form-control col-md-5">
+                            <input type="text" name="nome" id="nome" value="<%= dados.nome %>" class="form-control col-md-5">
                         </div>
+                        <%for(key in erros){%>
+                            <%if(erros[key].param == 'nome'){%>
+                                <div class="col-md-5 alert alert-danger" role="alert">
+                                    <%= erros[key].msg %>                               
+                                </div>
+                            <%}%>
+                        <%}%>
                         <div class="form-group">
                             <label for="cpf">CPF:</label>
                             <input type="text" name="cpf" id="cpf" value="" class="form-control col-md-3">
                         </div>
+                        <%for(key in erros){%>
+                            <%if(erros[key].param == 'cpf'){%>
+                                <div class="col-md-3 alert alert-danger" role="alert">
+                                    <%= erros[key].msg %>                               
+                                </div>
+                            <%}%>
+                        <%}%>
                         <div class="form-group">
                             <label for="email">E-mail:</label>
                             <input type="email" name="email" id="email" value="" class="form-control col-md-5">
                         </div>
+                        <%for(key in erros){%>
+                            <%if(erros[key].param == 'email'){%>
+                                <div class="col-md-5 alert alert-danger" role="alert">
+                                    <%= erros[key].msg %>                               
+                                </div>
+                            <%}%>
+                        <%}%>
                         <div class="form-group">
                             <label for="login">Login</label>:</label>
                             <input type="text" name="login" id="login" value="" class="form-control col-md-5">
                         </div>
+                        <%for(key in erros){%>
+                            <%if(erros[key].param == 'login'){%>
+                                <div class="col-md-5 alert alert-danger" role="alert">
+                                    <%= erros[key].msg %>                               
+                                </div>
+                            <%}%>
+                        <%}%>
                         <div class="form-group">
                             <label for="senha">Senha:</label>
                             <input type="password" name="senha" id="senha" senha="" class="form-control col-md-5">
                         </div>
+                        <%for(key in erros){%>
+                            <%if(erros[key].param == 'senha'){%>
+                                <div class="col-md-5 alert alert-danger" role="alert">
+                                    <%= erros[key].msg %>                               
+                                </div>
+                            <%}%>
+                        <%}%>
                         <div class="form-group">
                             <label for="ativo">Ativo?</label>
                             <div class="custom-control custom-radio">
@@ -65,7 +100,6 @@
                                         <%}%>
                                 </select>
                             </div>
-
                             <div class="col-md-3">
                                 <label for="perfil col-md-3">Perfil: </label>
                                 <select class="custom-select" name="perfil">
