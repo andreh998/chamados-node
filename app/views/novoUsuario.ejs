@@ -94,7 +94,7 @@
                         <div class="row form-group">
                             <div class="col-md-3">
                                 <label for="perfil col-md-3">Setor: </label>
-                                <select class="custom-select" name="departamento">                                
+                                <select class="custom-select" name="id_depto">                                
                                         <%for(key in departamentos){%>
                                             <option value="<%= departamentos[key].id %>"><%= departamentos[key].nome %></option>
                                         <%}%>
@@ -102,7 +102,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="perfil col-md-3">Perfil: </label>
-                                <select class="custom-select" name="perfil">
+                                <select class="custom-select" name="id_perfil">
                                     <%for(key in perfis){%>
                                     <option value="<%= perfis[key].id %>"><%= perfis[key].nome %></option>
                                     <%}%>
