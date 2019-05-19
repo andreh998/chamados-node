@@ -36,7 +36,10 @@ module.exports.validaLogin = function(application, req, res){
             //crio a sessao
             req.session.usuario = user;
 
-            if(result[0].senha === dados.password){
+            var cryptoController = application.app.controllers.cryptoController;
+            var senhaDecriptada = cryptoController.decrypt(dados.password);
+
+            if(result[0].senha === senhaDecriptada){
                 
                 var token = jwt.sign({user}, process.env.SECRET, {
                     expiresIn: "2h"
