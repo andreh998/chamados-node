@@ -16,8 +16,8 @@ module.exports.novo = function(application, req, res){
 
     let promisePerfis = new Promise((resolve, reject) => {
         var connection = application.config.dbConnection;
-        var PerfilModel = new application.app.models.PerfilModel(connection);
-        PerfilModel.getAll(function(err, result){
+        var PerfisModel = new application.app.models.PerfisModel(connection);
+        PerfisModel.getAll(function(err, result){
             if(!err){                
                 resolve(result);
             } else {
@@ -66,8 +66,8 @@ module.exports.validar = function(application, req, res){
     if(errors){
         let promisePerfis = new Promise((resolve, reject) => {
             var connection = application.config.dbConnection;
-            var PerfilModel = new application.app.models.PerfilModel(connection);
-            PerfilModel.getAll(function(err, result){
+            var PerfisModel = new application.app.models.PerfisModel(connection);
+            PerfisModel.getAll(function(err, result){
                 if(!err){                
                     resolve(result);
                 } else {
