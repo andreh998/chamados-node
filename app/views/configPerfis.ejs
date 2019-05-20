@@ -17,13 +17,90 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>Configuração dos perfis</h5>
+                    <h5>Perfis</h5>
                 </div>
             </div>
             <hr>
-            
+
+            <div class="row">
+                <div class="col-md-1">                    
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#cadastroPerfil">
+                        Novo »
+                    </button>
+                </div>
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <h5>Perfis</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                            <th scope="col">N°</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Ativo</th>
+                            <th scope="col">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%for(key in perfis){%>
+                            <tr>
+                                <th scope="row"><%= perfis[key].id %></th>
+                                <td><%= perfis[key].nome %></td>
+                                <td><%= perfis[key].descricao %></td>
+                                <td><%= perfis[key].ativo %></td>
+                                <td><img src="/icons/icons8-direita-30.png" alt=""></td>
+                            </tr>
+                            <%}%>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cadastroPerfil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Novo Perfil</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/config/perfis/gravar" method="POST">
+                            <div class="form-group">
+                                <label for="nome">Nome:</label>
+                                <input type="text" name="nome" id="nome" value="" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="ativo">Ativo:</label>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="defaultChecked" name="ativo" value="S" checked>
+                                    <label class="custom-control-label" for="defaultChecked">Sim</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    <input type="radio" class="custom-control-input" id="defaultUnchecked" name="ativo" value="N">
+                                    <label class="custom-control-label" for="defaultUnchecked">Não</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="descricao">Descrição:</label>
+                                <textarea class="form-control" name="descricao" id="message-text"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </form>
+                    </div>                    
+                </div>
+            </div>
+        </div>
     
     <% include ./layout/footer %>
 

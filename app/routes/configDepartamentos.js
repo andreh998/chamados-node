@@ -6,4 +6,8 @@ module.exports = function(application){
         application.app.controllers.departamentosController.index(application, req, res);
     });
 
+    application.post('/config/departamentos/gravar', verificaToken, function(req, res){
+        application.app.controllers.departamentosController.validar(application, req, res);
+    });
+
 }

@@ -12,3 +12,19 @@ module.exports.index = function(application, req, res){
     });    
 
 }
+
+module.exports.validar = function(application, req, res){
+
+    var departamento = req.body;
+
+    var connection = application.config.dbConnection;
+    var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
+    DepartamentosModel.add(departamento, function(err, result){
+        if(!err){
+            res.redirect('/config/departamentos');
+        } else {
+            console.log(err);
+            res.redirect('/config/departamentos');
+        }
+    });
+}

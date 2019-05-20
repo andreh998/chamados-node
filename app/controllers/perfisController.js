@@ -1,6 +1,6 @@
 module.exports.index = function(application, req, res){
     
-    var connection = application.confg.dbConnection;
+    var connection = application.config.dbConnection;
     var PerfisModel = new application.app.models.PerfisModel(connection);
     PerfisModel.getAll(function(err, result){
         if(!err){
@@ -11,4 +11,20 @@ module.exports.index = function(application, req, res){
         }
     });    
 
+}
+
+module.exports.validar = function(application, req, res){
+
+    var perfil = req.body;
+
+    var connection = application.config.dbConnection;
+    var PerfisModel = new application.app.models.PerfisModel(connection);
+    PerfisModel.add(perfil, function(err, result){
+        if(!err){
+            res.redirect('/config/perfis');
+        }else{
+            console.log(err);
+            res.redirect('/config/perfis');
+        }
+    });
 }

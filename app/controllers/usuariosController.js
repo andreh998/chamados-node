@@ -101,8 +101,8 @@ module.exports.validar = function(application, req, res){
             });
     }
 
-    var crytoController = application.app.controllers.crytoController;
-    var senhaCriptada = crytoController.crypt(usuario.senha);
+    var cryptoController = application.app.controllers.cryptoController;
+    var senhaCriptada = cryptoController.crypt(usuario.senha);
 
     var connection = application.config.dbConnection;
     var UsuariosModel = new application.app.models.UsuariosModel(connection);
