@@ -17,12 +17,90 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>Configuração dos chamados</h5>
+                    <h5>Chamados</h5>
                 </div>
             </div>
             <hr>
-            
+            <div class="row">
+                <div class="col-md-1">                    
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#cadastroAssunto">
+                        Novo »
+                    </button>
+                </div>
+            </div>
+            <br>
+            </class>
+            <div class="row">
+                <div class="col-md-12">                    
+                    <div class="row">
+                        <div class="col-md-1">
+                            <h5>Assuntos</h5>
+                        </div>                        
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                            <th scope="col">N°</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Departamento</th>
+                            <th scope="col">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%for(key in assuntos){%>
+                                <tr>
+                                <th scope="row"><%= assuntos[key].id %></th>
+                                <td><%= assuntos[key].nome %></td>
+                                <td><%= assuntos[key].descricao %></td>
+                                <td><%= assuntos[key].id_depto %></td>
+                                <td><img src="/icons/icons8-direita-30.png" alt=""></td>
+                                </tr>
+                            <%}%>
+                        </tbody>
+                    </table>
+                </div>                                
+            </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="cadastroAssunto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Novo Assunto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/config/chamados/assuntos/gravar" method="POST">
+                            <div class="form-group">
+                                <label for="nome">Nome:</label>
+                                <input type="text" name="nome" id="nome" value="" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="descricao">Descrição:</label>
+                                <textarea class="form-control" name="descricao" id="message-text"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="perfil">Setor atribuído: </label>
+                                <select class="custom-select" name="id_depto">                                
+                                        <%for(key in departamentos){%>
+                                            <option value="<%= departamentos[key].id %>"><%= departamentos[key].nome %></option>
+                                        <%}%>
+                                </select>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Salvar</button>
+                            </div>
+                        </form>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
     </main>
     
     <% include ./layout/footer %>
