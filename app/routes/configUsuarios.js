@@ -15,4 +15,8 @@ module.exports = function(application){
         application.app.controllers.usuariosController.validar(application, req, res);
     });
 
+    application.get('/config/usuarios/alterar/:id', verificaToken, function(req, res){
+        application.app.controllers.usuariosController.alterar(application, req, res);
+    });
+
 }
