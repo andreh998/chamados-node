@@ -26,8 +26,7 @@ CREATE TABLE IF NOT EXISTS usuarios(
     senha VARCHAR(255) NOT NULL,
     ativo CHAR(1) NOT NULL,
     data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	data_ultima_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    data_exclusao TIMESTAMP
+	data_ultima_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO usuarios (id_perfil, id_depto, nome, cpf, email, login, senha, ativo) VALUES 
@@ -71,7 +70,7 @@ CREATE TABLE IF NOT EXISTS anexos(
     id_chamado INT NOT NULL,
     nome_arquivo VARCHAR(255) NOT NULL,
     caminho_arquivo VARCHAR(255) NOT NULL
-)
+);
 
 ALTER TABLE anexos ADD CONSTRAINT fk_anexos_chamados FOREIGN KEY (id_chamado) REFERENCES chamados (id) ON DELETE CASCADE;
 

@@ -1,30 +1,26 @@
 module.exports.index = function(application, req, res){
     
-    var connection = application.config.dbConnection;
-    var PerfisModel = new application.app.models.PerfisModel(connection);
-    PerfisModel.getAll(function(err, result){
-        if(!err){
-            res.render('configPerfis', {perfis: result});
-        } else {
-            console.log(err);
-            return;
-        }
-    });    
+    var Perfil = application.config.database.models.Perfil;
+    Perfil.buscarTodos()
+    .then(perfis => {
+        res.render('configPerfis', {perfis: perfis});
+    }).catch(err => {
+        console.log(err);
+        return;
+    });
 
 }
 
 module.exports.validar = function(application, req, res){
 
     var perfil = req.body;
-
-    var connection = application.config.dbConnection;
-    var PerfisModel = new application.app.models.PerfisModel(connection);
-    PerfisModel.add(perfil, function(err, result){
-        if(!err){
-            res.redirect('/config/perfis');
-        }else{
-            console.log(err);
-            res.redirect('/config/perfis');
-        }
+    var Perfil = application.config.database.models.Perfil;
+    Perfil.adicionar(perfil.nome, perfil.descricao, perfil.ativo)
+    .then(result => {
+        res.redirect('/config/perfis');
+    }).catch(err => {
+        console.log(err);
+        res.redirect('/config/perfis');
     });
+
 }

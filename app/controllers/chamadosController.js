@@ -3,53 +3,33 @@ module.exports.index = function(application, req, res){
 }
 
 module.exports.configIndex = function(application, req, res){
-    let promiseAssuntos = new Promise((resolve, reject) => {
-        var connection = application.config.dbConnection;
-        var AssuntosModel = new application.app.models.AssuntosModel(connection);
-        AssuntosModel.getAll(function(err, result){
-            if(!err){                
-                resolve(result);
-            } else {
-                reject(err);
-                //res.render('novoUsuario');
-            }
-        });
-    });
-
-    let promiseDeptos = new Promise((resolve, reject) => {
-        var connection = application.config.dbConnection;
-        var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
-        DepartamentosModel.getAll(function(err, result){
-            if(!err){
-                resolve(result);
-            } else {
-                reject(err);
-            }
-        });
-    });    
     
-    Promise.all([promiseAssuntos, promiseDeptos])
-        .then(([resultPromiseAssuntos, resultPromiseDeptos])=>{
-            res.render('configChamados', {assuntos: resultPromiseAssuntos, departamentos: resultPromiseDeptos});
-            return;
-        })
-        .catch((error)=>{
-            console.log(error);
-            return;
-        });
+    var Assunto = application.config.database.models.Assunto;
+    var assuntos = Assunto.buscarTodos();
+
+    var Departamento = application.config.database.models.Departamento;
+    var departamentos = Departamento.buscarTodos();
+    
+    Promise.all([assuntos, departamentos]).then((results) =>{
+        console.log()
+        res.render('configChamados', {assuntos: results[0], departamentos: results[1]});
+    }).catch(err => {
+        console.log(err);
+        return;
+    });
+    
 }
 
 module.exports.gravarAssunto = function(application, req, res){
     var assunto = req.body;
 
-    var connection = application.config.dbConnection;
-    var AssuntosModel = new application.app.models.AssuntosModel(connection);
-    AssuntosModel.add(assunto, function(err, result){
-        if(!err){
-            res.redirect('/config/chamados');
-        }else{
-            console.log(err);
-            return;
-        }
+    var Assunto = application.config.database.models.Assunto;
+    Assunto.adicionar(assunto.nome, assunto.descricao, assunto.id_depto)
+    .then(result => {
+        res.redirect('/config/chamados');
+    }).catch(err => {
+        console.log(err);
+        return;
     });
+    
 }

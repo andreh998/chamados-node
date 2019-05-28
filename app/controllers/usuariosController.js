@@ -1,52 +1,32 @@
 module.exports.index = function(application, req, res){
 
-    var connection = application.config.dbConnection;
-    var UsuariosModel = new application.app.models.UsuariosModel(connection);
-    UsuariosModel.getAll(function(err, result){
-        if(!err){
-            res.render('configUsuarios', {usuarios: result}); 
-        } else {
-            console.log(err);
-            res.redirect('/');
-        }
+    var Usuario = application.config.database.models.Usuario;
+    Usuario.buscarTodos()
+    .then(usuarios => {
+        res.render('configUsuarios', {usuarios: usuarios});
+    }).catch(err => {
+        console.log(err);
+        return;
     });
+    
 }
 
 module.exports.novo = function(application, req, res){
 
-    let promisePerfis = new Promise((resolve, reject) => {
-        var connection = application.config.dbConnection;
-        var PerfisModel = new application.app.models.PerfisModel(connection);
-        PerfisModel.getAll(function(err, result){
-            if(!err){                
-                resolve(result);
-            } else {
-                reject(err);
-                //res.render('novoUsuario');
-            }
-        });
-    });
+    var Perfil = application.config.database.models.Perfil;
+    var perfis = Perfil.buscarTodos();
 
-    let promiseDeptos = new Promise((resolve, reject) => {
-        var connection = application.config.dbConnection;
-        var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
-        DepartamentosModel.getAll(function(err, result){
-            if(!err){
-                resolve(result);
-            } else {
-                reject(err);
-            }
-        });
+    var Departamento = application.config.database.models.Departamento;
+    var departamentos = Departamento.buscarTodos();
+    
+    Promise.all([perfis, departamentos])
+    .then(result => {
+        res.render('novoUsuario', {perfis: result[0], departamentos: result[1], erros: {}, dados: {}});
+    }).catch(err => {
+        console.log(err);
+        return;
     });    
     
-    Promise.all([promisePerfis, promiseDeptos])
-        .then(([resultPromisePerfis, resultPromiseDeptos])=>{            
-            res.render('novoUsuario', {perfis: resultPromisePerfis, departamentos: resultPromiseDeptos, erros: {}, dados: {}});
-        })
-        .catch((error)=>{
-            console.log(error);
-            res.render('configUsuarios', {usuarios: result});
-        });
 }
 
 module.exports.validar = function(application, req, res){
@@ -64,64 +44,40 @@ module.exports.validar = function(application, req, res){
     //console.log(usuario);
     
     if(errors){
-        let promisePerfis = new Promise((resolve, reject) => {
-            var connection = application.config.dbConnection;
-            var PerfisModel = new application.app.models.PerfisModel(connection);
-            PerfisModel.getAll(function(err, result){
-                if(!err){                
-                    resolve(result);
-                } else {
-                    reject(err);
-                    //res.render('novoUsuario');
-                }
-            });
-        });
+        var Perfil = application.config.database.models.Perfil;
+        var perfis = Perfil.buscarTodos();
     
-        let promiseDeptos = new Promise((resolve, reject) => {
-            var connection = application.config.dbConnection;
-            var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
-            DepartamentosModel.getAll(function(err, result){
-                if(!err){
-                    resolve(result);
-                } else {
-                    reject(err);
-                }
-            });
-        });    
+        var Departamento = application.config.database.models.Departamento;
+        var departamentos = Departamento.buscarTodos();
         
-        Promise.all([promisePerfis, promiseDeptos])
-            .then(([resultPromisePerfis, resultPromiseDeptos])=>{
-                res.render('novoUsuario', {perfis: resultPromisePerfis, departamentos: resultPromiseDeptos, erros: errors, dados: usuario});
-                return;
-            })
-            .catch((error)=>{
-                console.log(error);
-                res.render('configUsuarios', {usuarios: result});
-                return;
-            });
+        Promise.all([perfis, departamentos])
+        .then(result => {
+            res.render('novoUsuario', {perfis: result[0], departamentos: result[1], erros: erros, dados: usuario});
+        }).catch(err => {
+            console.log(err);
+            return;
+        });    
     }
 
     var cryptoController = application.app.controllers.cryptoController;
     var senhaCriptada = cryptoController.crypt(usuario.senha);
 
-    var connection = application.config.dbConnection;
-    var UsuariosModel = new application.app.models.UsuariosModel(connection);
+    var Usuario = application.config.database.models.Usuario;
     
     if(usuario.id == '' || usuario.id == null){
-        UsuariosModel.add(usuario.nome, usuario.cpf, usuario.email, usuario.login, senhaCriptada, usuario.ativo, usuario.id_depto, usuario.id_perfil, function(err, result){
-            if(!err){
-                res.redirect('/config/usuarios');
-            } else {
-                console.log(err);            
-            }
+        Usuario.adicionar(usuario.nome, usuario.cpf, usuario.email, usuario.login, senhaCriptada, usuario.ativo, usuario.id_perfil, usuario.id_depto)
+        .then(result => {
+            res.redirect('/config/usuarios');
+        }).catch(err => {
+            console.log(err); 
         });
+
     } else if(usuario.id != '' || usuario.id > 0){
-        UsuariosModel.update(usuario.id, usuario.nome, usuario.cpf, usuario.email, usuario.login, senhaCriptada, usuario.ativo, usuario.id_depto, usuario.id_perfil, function(err, result){
-            if(!err){
-                res.redirect('/config/usuarios');
-            } else {
-                console.log(err);            
-            }
+        Usuario.alterar(usuario.id, usuario.nome, usuario.cpf, usuario.email, usuario.login, senhaCriptada, usuario.ativo, usuario.id_perfil, usuario.id_depto)
+        .then(result => {
+            res.redirect('/config/usuarios');
+        }).catch(err => {
+            console.log(err); 
         });
     }
     
@@ -129,10 +85,10 @@ module.exports.validar = function(application, req, res){
 }
 
 module.exports.alterar = function(application, req, res){
-    var connection = application.config.dbConnection;
-    var UsuariosModel = new application.app.models.UsuariosModel(connection);
-    UsuariosModel.findById(req.params.id, function(err, result){
-
+    
+    var Usuario = application.config.database.models.Usuario;
+    Usuario.buscarPorId(req.params.id)
+    .then(result => {
         var cryptoController = application.app.controllers.cryptoController;
         var senhaDecriptada = cryptoController.decrypt(result[0].senha);
 
@@ -146,47 +102,25 @@ module.exports.alterar = function(application, req, res){
         usuario.ativo = result[0].ativo;
         usuario.id_perfil = result[0].id_perfil;
         usuario.id_depto = result[0].id_depto;
-        console.log(usuario);
+        //console.log(usuario);
+
+        var Perfil = application.config.database.models.Perfil;
+        var perfis = Perfil.buscarTodos();
+    
+        var Departamento = application.config.database.models.Departamento;
+        var departamentos = Departamento.buscarTodos();
         
-        if(!err){
-            let promisePerfis = new Promise((resolve, reject) => {
-                var connection = application.config.dbConnection;
-                var PerfisModel = new application.app.models.PerfisModel(connection);
-                PerfisModel.getAll(function(err, result){
-                    if(!err){                
-                        resolve(result);
-                    } else {
-                        reject(err);
-                        //res.render('novoUsuario');
-                    }
-                });
-            });
-        
-            let promiseDeptos = new Promise((resolve, reject) => {
-                var connection = application.config.dbConnection;
-                var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
-                DepartamentosModel.getAll(function(err, result){
-                    if(!err){
-                        resolve(result);
-                    } else {
-                        reject(err);
-                    }
-                });
-            });    
-            
-            Promise.all([promisePerfis, promiseDeptos])
-                .then(([resultPromisePerfis, resultPromiseDeptos])=>{
-                    res.render('novoUsuario', {perfis: resultPromisePerfis, departamentos: resultPromiseDeptos, erros: {}, dados: usuario});
-                    return;
-                })
-                .catch((error)=>{
-                    console.log(error);
-                    res.render('configUsuarios', {usuarios: result});
-                    return;
-                });
-        }else{
+        Promise.all([perfis, departamentos])
+        .then(result => {
+            res.render('novoUsuario', {perfis: result[0], departamentos: result[1], erros: {}, dados: usuario});
+        }).catch(err => {
             console.log(err);
-            res.render('configUsuarios', {usuarios: result});
-        }
+            return;
+        });   
+
+    }).catch(err => {
+        console.log(err);
+        return;
     });
+    
 }

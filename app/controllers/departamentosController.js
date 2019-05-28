@@ -1,30 +1,27 @@
 module.exports.index = function(application, req, res){
 
-    var connection = application.config.dbConnection;
-    var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
-    DepartamentosModel.getAll(function(err, result){
-        if(!err){
-            res.render('configDepartamentos', {deptos: result});
-        } else {
-            console.log(err);
-            return;
-        }
-    });    
-
+    var Departamento = application.config.database.models.Departamento;
+    Departamento.buscarTodos()
+    .then(departamentos => {
+        res.render('configDepartamentos', {deptos: departamentos});
+    }).catch(err => {
+        console.log(err);
+        return;
+    });
+    
 }
 
 module.exports.validar = function(application, req, res){
 
     var departamento = req.body;
 
-    var connection = application.config.dbConnection;
-    var DepartamentosModel = new application.app.models.DepartamentosModel(connection);
-    DepartamentosModel.add(departamento, function(err, result){
-        if(!err){
-            res.redirect('/config/departamentos');
-        } else {
-            console.log(err);
-            res.redirect('/config/departamentos');
-        }
+    var Departamento = application.config.database.models.Departamento;
+    Departamento.adicionar(departamento.nome, departamento.descricao)
+    .then(result => {
+        res.redirect('/config/departamentos');
+    }).catch(err => {
+        console.log(err);
+        res.redirect('/config/departamentos');
     });
+
 }

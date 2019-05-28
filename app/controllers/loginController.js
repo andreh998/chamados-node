@@ -23,43 +23,41 @@ module.exports.validaLogin = function(application, req, res){
         return;
     }
 
-    var connection = application.config.dbConnection;
-    var LoginModel = new application.app.models.LoginModel(connection);
-    LoginModel.buscar(dados.username, function(err, result){
-        if(err){
-            console.log(err);
-            res.render('login', {campos: dados, erros: {}});
+    var Usuario = application.config.database.models.Usuario;
+    Usuario.buscarPorLogin(dados.username)
+    .then(usuario => {
+        //crio uma variavel user com o resultado da busca
+        var user = usuario[0];
+        //crio a sessao
+        req.session.usuario = usuario[0];
+
+        var cryptoController = application.app.controllers.cryptoController;
+        var senhaDecriptada = cryptoController.decrypt(user.senha);
+
+        if(senhaDecriptada === dados.password){
+            
+            var token = jwt.sign({user}, process.env.SECRET, {
+                expiresIn: "2h"
+            });
+            /** 
+             * Salvo o token em um cookie que será acessível para validações futuras
+             * O httpOnly impede que o cookie seja acessado do lado do cliente
+             * O secure indica ao navegador que só envie esse cookie em solicitações
+             * https
+             */
+            res.cookie('auth', token, {httpOnly: true});
+            res.redirect('/');
+        } else {          
+            erro = [{msg: "Usuário ou senha inválido"}];
+            res.render('login', {campos: dados, erros: erro});
             return;
-        } else {
-            //crio uma variavel user com o resultado da busca
-            var user = result[0];
-            //crio a sessao
-            req.session.usuario = user;
-
-            var cryptoController = application.app.controllers.cryptoController;
-            var senhaDecriptada = cryptoController.decrypt(result[0].senha);
-
-            if(senhaDecriptada === dados.password){
-                
-                var token = jwt.sign({user}, process.env.SECRET, {
-                    expiresIn: "2h"
-                });
-                /** 
-                 * Salvo o token em um cookie que será acessível para validações futuras
-                 * O httpOnly impede que o cookie seja acessado do lado do cliente
-                 * O secure indica ao navegador que só envie esse cookie em solicitações
-                 * https
-                 */
-                res.cookie('auth', token, {httpOnly: true});
-                res.redirect('/');
-            } else {          
-                erro = [{msg: "Usuário ou senha inválido"}];
-                res.render('login', {campos: dados, erros: erro});
-                return;
-            }
         }
+    }).catch(err => {
+        console.log(err);
+        res.render('login', {campos: dados, erros: {}});
+        return;
     });
-
+  
 }
 
 module.exports.logout = function(application, req, res){
