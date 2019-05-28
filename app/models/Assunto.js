@@ -28,7 +28,12 @@ module.exports = (sequelize, DataType) => {
         Assunto.belongsTo(models.Departamento, {
             as: 'depto_assunto',
             foreignKey: 'id_depto'
-        })
+        });
+
+        Assunto.hasMany(models.Chamado, {
+            as: 'assunto_chamado',
+            foreignKey: 'id_assunto'
+        });
     };
 
     Assunto.buscarTodos = () => {

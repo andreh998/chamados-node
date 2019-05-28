@@ -30,6 +30,11 @@ module.exports = (sequelize, DataType) => {
             as: 'depto_usuario',
             foreignKey: 'id_depto'
         });
+
+        Departamento.hasMany(models.Chamado, {
+            as: 'chamado_departamento',
+            foreignKey: 'id_depto_atribuido'
+        });
     };
 
     Departamento.buscarTodos = () => {

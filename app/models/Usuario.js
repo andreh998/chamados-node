@@ -63,6 +63,16 @@ module.exports = (sequelize, DataType) => {
             as: 'depto_usuario',
             foreignKey: 'id_depto'
         });
+
+        Usuario.hasMany(models.Chamado, {
+            as: 'usuario_abertura_chamado',
+            foreignKey: 'id_usuario_abertura'
+        });
+
+        Usuario.hasMany(models.Chamado, {
+            as: 'usuario_atribuido_chamado',
+            foreignKey: 'id_usuario_atribuido'
+        });
     };
 
     Usuario.buscarTodos = () => {
