@@ -84,5 +84,41 @@ module.exports = (sequelize, DataType) => {
         });
     };
 
+    Chamado.adicionar = (titulo, descricao_problema, id_usuario_abertura, id_prioridade, id_depto_atribuido, id_assunto, id_status) => {
+        return Chamado.create({
+            titulo: titulo,
+            descricao_problema: descricao_problema,
+            id_status: id_status,
+            id_prioridade: id_prioridade,
+            id_usuario_abertura: id_usuario_abertura,
+            id_depto_atribuido: id_depto_atribuido,
+            id_assunto: id_assunto
+        });
+    };
+
+    Chamado.buscarPorIdDepto = (id) => {
+        return Chamado.findAll({
+            where: {
+                id_depto_atribuido: id
+            }
+        });
+    };
+
+    Chamado.buscarPorIdUsuarioAtribuido = (id) =>{
+        return Chamado.findAll({
+            where: {
+                id_usuario_atribuido: id
+            }
+        });
+    };
+
+    Chamado.buscarPorIdUsuarioAbertura = (id) => {
+        return Chamado.findAll({
+            where: {
+                id_usuario_abertura: id
+            }
+        });
+    };
+
     return Chamado;
 }
