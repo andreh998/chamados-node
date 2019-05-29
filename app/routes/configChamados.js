@@ -14,4 +14,12 @@ module.exports = function(application){
         application.app.controllers.chamadosController.gravarAssunto(application, req, res);
     });
 
+    application.post('/config/chamados/status/gravar', verificaToken, function(req, res){
+        application.app.controllers.chamadosController.gravarStatus(application, req, res);
+    });
+
+    application.post('/config/chamados/prioridade/gravar', verificaToken, function(req, res){
+        application.app.controllers.chamadosController.gravarPrioridade(application, req, res);
+    });
+
 }

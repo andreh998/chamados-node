@@ -7,4 +7,12 @@ module.exports = function(application){
         application.app.controllers.chamadosController.index(application, req, res);
     });
 
+    application.get('/chamados/novo', verificaToken, function(req, res){
+        application.app.controllers.chamadosController.novo(application, req, res);
+    });
+
+    application.post('/chamados/assuntos/buscar', verificaToken, function(req, res){
+        application.app.controllers.chamadosController.buscarAssuntos(application, req, res);
+    });
+
 }

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Abrir Chamado</title>
+</head>
+
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+<body>
+
+    <% include ./layout/navbar %>
+
+    <main role="main" style="margin-top:95px">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Abertura de chamado</h5>
+                </div>
+            </div>
+            <hr>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <form action="/chamados/novo/gravar" method="POST">
+                        <div class="form-group">
+                            <label for="titulo">Título:</label>
+                            <input type="text" name="titulo" value="" class="form-control col-md-5">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 form-group">
+                                <label for="perfil col-md-3">Status: </label>
+                                <select class="custom-select" name="id_status"">
+                                        <option value="0">Selecione um Status</option>
+                                    <%for(key in status){%>
+                                        <option value="<%= status[key].id %>"><%= status[key].nome %></option>                                        
+                                    <%}%>
+                                </select>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="perfil col-md-3">Prioridade: </label>
+                                <select class="custom-select" name="id_prioridade">
+                                        <option value="0">Selecione uma Prioridade</option>
+                                    <%for(key in prioridades){%>
+                                        <option value="<%= prioridades[key].id %>"><%= prioridades[key].nome %></option>                                        
+                                    <%}%>
+                                </select>
+                            </div>
+                            <div class="col-md-3 form-group">
+                                <label for="perfil col-md-3">Abrir para departamento: </label>
+                                <select class="custom-select" id="deptos" name="id_depto_atribuido">
+                                        <option value="0">Selecione um Departamento</option>
+                                    <%for(key in departamentos){%>
+                                        <option value="<%= departamentos[key].id %>"><%= departamentos[key].nome %></option>                                        
+                                    <%}%>                                        
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">                            
+                            <div class="col-md-9">
+                                <label for="perfil col-md-3">Assunto: </label>
+                                <select class="custom-select" id="assuntos" name="id_assunto">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="descricao">Descrição:</label>
+                            <textarea class="form-control" style="height:200px;" name="descricao_problema" id="message-text"></textarea>
+                        </div>
+                        <div class=" form-group">                            
+                            <button class="btn btn-primary btn-md" type="submit">Abrir</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <% include ./layout/footer %>
+
+</body>
+
+<script src="/js/jquery-3.4.1.slim.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+<!--Função para carregar os Assuntos conforme o Departamento escolhido-->
+<script>
+    $(function(){     
+        $("#deptos").on('change', function(){
+            var id = $("#deptos").val();
+            $.ajax({
+                url: '/chamados/assuntos/buscar',
+                type: 'POST',
+                data: { id },
+                success: function (data) {
+                    $('#assuntos').empty();
+                    for (var i = 0; i < data.length; i++) {
+                        $('#assuntos').append('<option value="' + data[i].id + '">' + data[i].nome + "</option>");
+                    };
+                }
+            });
+        });    
+    });
+</script>
+
+</html>

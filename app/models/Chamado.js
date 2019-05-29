@@ -9,14 +9,6 @@ module.exports = (sequelize, DataType) => {
             type: DataType.STRING,
             allowNull: false
         },
-        status: {
-            type: DataType.STRING,
-            allowNull: false
-        },
-        prioridade: {
-            type: DataType.STRING,
-            allowNull: false
-        },
         descricao_problema: {
             type: DataType.TEXT,
             allowNull: false
@@ -42,6 +34,14 @@ module.exports = (sequelize, DataType) => {
             type: DataType.INTEGER
         },
         id_assunto: {
+            type: DataType.INTEGER,
+            allowNull: false
+        },
+        id_status: {
+            type: DataType.INTEGER,
+            allowNull: false
+        },
+        id_prioridade: {
             type: DataType.INTEGER,
             allowNull: false
         }
@@ -71,6 +71,16 @@ module.exports = (sequelize, DataType) => {
         Chamado.belongsTo(models.Assunto, {
             as: 'assunto_chamado',
             foreignKey: 'id_assunto'
+        });
+
+        Chamado.belongsTo(models.Status, {
+            as: 'status_chamado',
+            foreignKey: 'id_status'
+        });
+
+        Chamado.belongsTo(models.Prioridade, {
+            as: 'prioridade_chamado',
+            foreignKey: 'id_prioridade'
         });
     };
 

@@ -39,6 +39,14 @@ module.exports = (sequelize, DataType) => {
     Assunto.buscarTodos = () => {
         return Assunto.findAll();
     };
+
+    Assunto.buscarPorIdDepartamento = (id) => {
+        return Assunto.findAll({
+            where: {
+                id_depto: id
+            }
+        });
+    };
     
     Assunto.adicionar = (nome, descricao, id_depto) => {
         return Assunto.create({

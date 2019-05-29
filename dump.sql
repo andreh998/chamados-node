@@ -45,6 +45,16 @@ CREATE TABLE IF NOT EXISTS assuntos(
 
 ALTER TABLE assuntos ADD CONSTRAINT fk_assunto_departamento FOREIGN KEY (id_depto) REFERENCES departamentos (id) ON DELETE CASCADE;
 
+CREATE TABLE IF NOT EXISTS status(
+    id INT PRIMARY KEY AUTO_INCREMENT,    
+    nome VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS prioridades(
+    id INT PRIMARY KEY AUTO_INCREMENT,    
+    nome VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS chamados(
 	id INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario_abertura INT NOT NULL,
@@ -52,14 +62,16 @@ CREATE TABLE IF NOT EXISTS chamados(
     id_usuario_atribuido INT NOT NULL,
     id_assunto INT NOT NULL,
     titulo VARCHAR(255) NOT NULL,
-    status VARCHAR(255) NOT NULL,
-    prioridade VARCHAR(255) NOT NULL,
+    id_status INT NOT NULL,
+    id_prioridade INT NOT NULL,
     descricao_problema TEXT NOT NULL,
     data_abertura TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_ultima_interacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	data_encerramento TIMESTAMP    
 );
 
+ALTER TABLE chamados ADD CONSTRAINT fk_chamado_status FOREIGN KEY (id_status) REFERENCES status (id) ON DELETE CASCADE;
+ALTER TABLE chamados ADD CONSTRAINT fk_chamado_prioridade FOREIGN KEY (id_prioridade) REFERENCES prioridades (id) ON DELETE CASCADE;
 ALTER TABLE chamados ADD CONSTRAINT fk_chamado_usuario_abertura FOREIGN KEY (id_usuario_abertura) REFERENCES usuarios (id) ON DELETE CASCADE;
 ALTER TABLE chamados ADD CONSTRAINT fk_chamado_depto_atribuido FOREIGN KEY (id_depto_atribuido) REFERENCES departamentos (id) ON DELETE CASCADE;
 ALTER TABLE chamados ADD CONSTRAINT fk_chamado_usuario_atribuido FOREIGN KEY (id_usuario_atribuido) REFERENCES usuarios (id) ON DELETE CASCADE;
