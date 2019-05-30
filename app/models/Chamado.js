@@ -31,7 +31,8 @@ module.exports = (sequelize, DataType) => {
             allowNull: false
         },
         id_usuario_atribuido: {
-            type: DataType.INTEGER
+            type: DataType.INTEGER,
+            allowNull: true
         },
         id_assunto: {
             type: DataType.INTEGER,
@@ -96,11 +97,27 @@ module.exports = (sequelize, DataType) => {
         });
     };
 
-    Chamado.buscarPorIdDepto = (id) => {
+    Chamado.buscarPorIdDepto = (id, Prioridade, Status, Assunto, Usuario, Departamento) => {
         return Chamado.findAll({
             where: {
                 id_depto_atribuido: id
-            }
+            },
+            include:[{
+                model: Prioridade,
+                as: 'prioridade_chamado'            
+            },{
+                model: Status,
+                as: 'status_chamado'            
+            },{
+                model: Assunto,
+                as: 'assunto_chamado'            
+            },{
+                model: Usuario,
+                as: 'usuario_abertura_chamado'            
+            },{
+                model: Departamento,
+                as: 'chamado_departamento'            
+            }]
         });
     };
 

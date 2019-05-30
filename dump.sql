@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS chamados(
 	id INT PRIMARY KEY AUTO_INCREMENT,
     id_usuario_abertura INT NOT NULL,
     id_depto_atribuido INT NOT NULL,
-    id_usuario_atribuido INT NOT NULL,
+    id_usuario_atribuido INT,
     id_assunto INT NOT NULL,
     titulo VARCHAR(255) NOT NULL,
     id_status INT NOT NULL,

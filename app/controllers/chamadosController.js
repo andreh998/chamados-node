@@ -1,5 +1,19 @@
 module.exports.index = function(application, req, res){
-    res.render('chamados');
+    var id_depto_atribuido = req.session.usuario.id_depto;
+    var Chamado = application.config.database.models.Chamado;
+    var Prioridade = application.config.database.models.Prioridade;
+    var Status = application.config.database.models.Status;
+    var Assunto = application.config.database.models.Assunto;
+    var Usuario = application.config.database.models.Usuario;
+    var Departamento = application.config.database.models.Departamento;
+    Chamado.buscarPorIdDepto(id_depto_atribuido, Prioridade, Status, Assunto, Usuario, Departamento)
+    .then(chamados => {
+        res.render('chamados', {chamados: chamados});
+    }). catch(err => {
+        console.log(err);
+        return;
+    });
+    
 }
 
 module.exports.configIndex = function(application, req, res){
@@ -97,5 +111,20 @@ module.exports.buscarAssuntos = function(application, req, res){
         return;
     })
     
+    
+}
+
+module.exports.gravarChamado = function(application, req, res){
+    var chamado = req.body;
+    chamado.id_usuario_abertura = req.session.usuario.id;
+    
+    var Chamado = application.config.database.models.Chamado;
+    Chamado.adicionar(chamado.titulo, chamado.descricao_problema, chamado.id_usuario_abertura, chamado.id_prioridade, chamado.id_depto_atribuido, chamado.id_assunto, chamado.id_status)
+    .then(result => {
+        res.redirect('/chamados');
+    }).catch(err => {
+        console.log(err);
+        return;
+    })
     
 }

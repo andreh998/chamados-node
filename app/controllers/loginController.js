@@ -46,6 +46,7 @@ module.exports.validaLogin = function(application, req, res){
              * https
              */
             res.cookie('auth', token, {httpOnly: true});
+            res.cookie('user', user, {httpOnly: true});
             res.redirect('/');
         } else {          
             erro = [{msg: "Usuário ou senha inválido"}];

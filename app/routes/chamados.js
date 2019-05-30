@@ -15,4 +15,8 @@ module.exports = function(application){
         application.app.controllers.chamadosController.buscarAssuntos(application, req, res);
     });
 
+    application.post('/chamados/novo/gravar', verificaToken, function(req, res){
+        application.app.controllers.chamadosController.gravarChamado(application, req, res);
+    });
+
 }
