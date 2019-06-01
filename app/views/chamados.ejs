@@ -68,7 +68,7 @@
                                             <td><%= chamados[key].usuario_abertura_chamado.nome %></td>
                                             <td><%= chamados[key].assunto_chamado.nome %></td>
                                             <td>
-                                                <a href="#"><img src="/icons/atribuir.png" title="Pegar chamado" alt=""></a>
+                                                <a href="/chamados/interacao/<%= chamados[key].id =>"><img src="/icons/atribuir.png" title="Pegar chamado" alt=""></a>
                                                 <a href="#" data-id="<%= chamados[key].id %>" data-descricao="<%= chamados[key].descricao_problema %>" data-toggle="modal" data-target="#exampleModalCenter" title="Visualização prévia"><img src="/icons/visualizar.png" alt=""></a>
                                             </td>
                                             </tr>
@@ -103,7 +103,7 @@
                         <div class="descricao-chamado"></div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#"><img src="/icons/atribuir.png" alt="" title="Pegar chamado" ></a>
+                        <a id="pegar" href="#"><img src="/icons/atribuir.png" alt="" title="Pegar chamado" ></a>
                         <a href="#" data-dismiss="modal"> <img src="/icons/fechar.png" alt="" title="Fechar visualização"></a>
                     </div>
                 </div>
@@ -128,4 +128,16 @@
         modal.find('.descricao-chamado').text(descricao);
     });
 </script>
+<script>
+    $(function(){     
+        $("#pegar").on('click', function(){
+            var id = $("#id_chamado").html();
+            $.ajax({
+                url: '/chamados/interacao/'+id,
+                type: 'GET'
+            });
+        });    
+    });
+</script>
+
 </html>

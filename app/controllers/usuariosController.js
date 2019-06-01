@@ -80,8 +80,6 @@ module.exports.validar = function(application, req, res){
             console.log(err); 
         });
     }
-    
-    
 }
 
 module.exports.alterar = function(application, req, res){
