@@ -1,0 +1,29 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+        <th scope="col">N°</th>
+        <th scope="col">Título</th>
+        <th scope="col">Status</th>
+        <th scope="col">Prioridade</th>
+        <th scope="col">Departamento</th>
+        <th scope="col">Solicitante</th>
+        <th scope="col">Assunto</th>
+        <th scope="col">Ação</th>
+        </tr>
+    </thead>
+        <%for(key in chamados){%>
+            <tr>
+            <th scope="row"><%= chamados[key].id %></th>
+            <td><%= chamados[key].titulo %></td>
+            <td><%= chamados[key].status_chamado.nome %></td>
+            <td><%= chamados[key].prioridade_chamado.nome %></td>
+            <td><%= chamados[key].chamado_departamento.nome %></td>
+            <td><%= chamados[key].usuario_abertura_chamado.nome %></td>
+            <td><%= chamados[key].assunto_chamado.nome %></td>
+            <td>
+                <a href="#" ><img src="/icons/visualizar.png" alt=""></a>
+            </td>
+            </tr>
+        <%}%>
+    </tbody>
+</table>

@@ -23,4 +23,12 @@ module.exports = function(application){
         application.app.controllers.chamadosController.interacaoChamado(application, req, res);
     });
 
+    application.get('/chamados/meus/buscar', verificaToken, function(req, res){
+        application.app.controllers.chamadosController.buscarMeus(application, req, res);
+    });
+
+    application.get('/chamados/atribuidos/buscar', verificaToken, function(req, res){
+        application.app.controllers.chamadosController.buscarAtribuidos(application, req, res);
+    });
+
 }

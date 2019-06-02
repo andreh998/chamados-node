@@ -35,10 +35,10 @@
                             <a class="nav-link active" data-toggle="tab" href="#setor" role="tab" aria-controls="setor" aria-selected="true">Setor</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#seus" role="tab" aria-controls="seus" aria-selected="false">Seus</a>
+                            <a class="nav-link" id="tab-meus" data-toggle="tab" href="#meus" role="tab" aria-controls="meus" aria-selected="false">Meus</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#atribuidos" role="tab" aria-controls="atribuidos" aria-selected="false">Atribuídos</a>
+                            <a class="nav-link" id="tab-atribuidos" data-toggle="tab" href="#atribuidos" role="tab" aria-controls="atribuidos" aria-selected="false">Atribuídos</a>
                         </li>
                     </ul>
                     <br>
@@ -68,7 +68,7 @@
                                             <td><%= chamados[key].usuario_abertura_chamado.nome %></td>
                                             <td><%= chamados[key].assunto_chamado.nome %></td>
                                             <td>
-                                                <a href="/chamados/interacao/<%= chamados[key].id =>"><img src="/icons/atribuir.png" title="Pegar chamado" alt=""></a>
+                                                <a href="/chamados/interacao/<%= chamados[key].id %>"><img src="/icons/atribuir.png" title="Pegar chamado" alt=""></a>
                                                 <a href="#" data-id="<%= chamados[key].id %>" data-descricao="<%= chamados[key].descricao_problema %>" data-toggle="modal" data-target="#exampleModalCenter" title="Visualização prévia"><img src="/icons/visualizar.png" alt=""></a>
                                             </td>
                                             </tr>
@@ -77,11 +77,15 @@
                                 </table>
                             </div>       
                         </div>
-                        <div class="tab-pane fade" id="seus" role="tabpanel" aria-labelledby="profile-tab">
-                            Seus
+                        <div class="tab-pane fade" id="meus" role="tabpanel" aria-labelledby="profile-tab">
+                            <div id="tabela-meus" class="col-md-12">
+                                
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="atribuidos" role="tabpanel" aria-labelledby="contact-tab">
-                            Atribuídos
+                            <div id="tabela-atribuidos" class="col-md-12">
+                                
+                            </div>                            
                         </div>
                     </div>
                 </div>
@@ -116,7 +120,10 @@
 </body>
 
 <script src="/js/jquery-3.4.1.slim.js"></script>
+<script src="/js/jquery-3.4.1.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+
+<!-- mandar informações para a modal de prévia do chamado -->
 <script>
     $('#exampleModalCenter').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
@@ -126,18 +133,35 @@
         var modal = $(this);
         modal.find('.id-chamado').text(id);
         modal.find('.descricao-chamado').text(descricao);
+        //defino o href do botão de pegar chamado da modal
+        var url = '/chamados/interacao/'+id;                
+        $("#pegar").attr("href", url);
     });
 </script>
+
+<!-- carregar itens na aba de meus chamados -->
 <script>
-    $(function(){
-        $("#pegar").on('click', function(){
-            var id = $("#id_chamado").html();
-            $.ajax({
-                url: '/chamados/interacao/'+id,
-                type: 'GET'
-            });
+    $('#tab-meus').on('click', function(){
+        $.ajax({
+            url: '/chamados/meus/buscar',
+            type: 'GET',
+            success: function (tabela) {
+                $('#tabela-meus').html(tabela);
+            }
         });
     });
 </script>
 
+<!-- carregar itens na aba de chamados atribuídos a mim -->
+<script>
+        $('#tab-atribuidos').on('click', function(){
+            $.ajax({
+                url: '/chamados/atribuidos/buscar',
+                type: 'GET',
+                success: function (tabela) {
+                    $('#tabela-atribuidos').html(tabela);
+                }
+            });
+        });
+    </script>
 </html>

@@ -128,10 +128,45 @@ module.exports.gravarChamado = function(application, req, res){
     
 }
 
-module.exports.interacaoChamado = function(application, req, rs){
+module.exports.buscarMeus = function(application, req, res){
+    var id_usuario_abertura = req.session.usuario.id;
+    var Chamado = application.config.database.models.Chamado;
+    var Prioridade = application.config.database.models.Prioridade;
+    var Status = application.config.database.models.Status;
+    var Assunto = application.config.database.models.Assunto;
+    var Usuario = application.config.database.models.Usuario;
+    var Departamento = application.config.database.models.Departamento;
+
+    Chamado.buscarPorIdUsuarioAbertura(id_usuario_abertura, Prioridade, Status, Assunto, Usuario, Departamento)
+    .then(chamados => {
+        res.render('tabelaMeusChamados', {chamados: chamados});
+    }).catch(err =>{
+        console.log(err);
+        return;
+    });
+}
+
+module.exports.buscarAtribuidos = function(application, req, res){
+    var id_usuario_abertura = req.session.usuario.id;
+    var Chamado = application.config.database.models.Chamado;
+    var Prioridade = application.config.database.models.Prioridade;
+    var Status = application.config.database.models.Status;
+    var Assunto = application.config.database.models.Assunto;
+    var Usuario = application.config.database.models.Usuario;
+    var Departamento = application.config.database.models.Departamento;
+
+    Chamado.buscarPorIdUsuarioAtribuido(id_usuario_abertura, Prioridade, Status, Assunto, Usuario, Departamento)
+    .then(chamados => {
+        res.render('tabelaChamadosAtribuidos', {chamados: chamados});
+    }).catch(err =>{
+        console.log(err);
+        return;
+    });
+}
+
+module.exports.interacaoChamado = function(application, req, res){
     var id_chamado = req.params.id;
     var id_usuario_atribuido = req.session.usuario.id;
 
     res.render('interacaoChamados', {numero: id_chamado});
-
 }

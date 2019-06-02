@@ -27,16 +27,15 @@
                                 <label for="password" class="text-info">Senha:</label><br>
                                 <input type="password" name="password" id="password" value="<%= campos.password %>" class="form-control">
                             </div>
+                            <div class="form-group">                                
+                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Entrar">
+                            </div>
                             <div class="form-group">
                                 <%if(erros){%>
                                     <%for(key in erros){%>
                                         <label for="error" class="text-danger"><%= erros[key].msg %></label>
                                     <%}%>
-                                <%}%>
-                               
-                            </div>
-                            <div class="form-group">                                
-                                <input type="submit" name="submit" class="btn btn-info btn-md" value="Entrar">
+                                <%}%>                               
                             </div>
                         </form>
                     </div>
