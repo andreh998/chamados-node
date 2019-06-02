@@ -129,14 +129,14 @@
     });
 </script>
 <script>
-    $(function(){     
+    $(function(){
         $("#pegar").on('click', function(){
             var id = $("#id_chamado").html();
             $.ajax({
                 url: '/chamados/interacao/'+id,
                 type: 'GET'
             });
-        });    
+        });
     });
 </script>
 

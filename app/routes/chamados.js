@@ -19,4 +19,8 @@ module.exports = function(application){
         application.app.controllers.chamadosController.gravarChamado(application, req, res);
     });
 
+    application.get('/chamados/interacao/:id', verificaToken, function(req, res){
+        application.app.controllers.chamadosController.interacaoChamado(application, req, res);
+    });
+
 }

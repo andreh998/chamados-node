@@ -109,8 +109,7 @@ module.exports.buscarAssuntos = function(application, req, res){
     }).catch(err =>{
         console.log(err);
         return;
-    })
-    
+    });    
     
 }
 
@@ -125,6 +124,14 @@ module.exports.gravarChamado = function(application, req, res){
     }).catch(err => {
         console.log(err);
         return;
-    })
+    });
     
+}
+
+module.exports.interacaoChamado = function(application, req, rs){
+    var id_chamado = req.params.id;
+    var id_usuario_atribuido = req.session.usuario.id;
+
+    res.render('interacaoChamados', {numero: id_chamado});
+
 }
