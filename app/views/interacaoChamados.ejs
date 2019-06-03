@@ -15,19 +15,131 @@
     <% include ./layout/navbar %>
 
     <main role="main" style="margin-top:95px">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>Chamado ID: <%= numero %></h5>
+                    <h5><b>Chamado #<%= numero %></b></h5>
                 </div>
-            </div>            
-            <br>
+            </div>
 
             <div class="row">
                 <div class="col-md-12">
-                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    Origem: <b>departamento de TI</b>
+                                </div>                                
+                                <div class="col-md-6">
+                                    Solicitante: <b>André</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    Destino: <b>Setor Administrativo</b>                                   
+                                </div>                                
+                                <div class="col-md-6">
+                                    Aberto em: <b>25/02/2018 13:30:00</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    Assunto: <b>Pagar os boletos</b>                               
+                                </div>                                
+                                <div class="col-md-6">
+                                    Status atual: <b>Andamento</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <br>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><b>Descrição:</b></h5>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        Descrição do chamado.
+                    </div>
+                </div>
+            </div> 
+            <br>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><b>Interações:</b></h5>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        Interação 1.
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        Interação 2.
+                    </div>
+                </div>
+            </div>
+            <br>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><b>Responder:</b></h5>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row col-md-12">
+                        <form action="" method="post">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label for="perfil col-md-3">Status: </label>
+                                    <select class="custom-select" name="id_status"">
+                                            <option value="0">Selecione um Status</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label for="perfil col-md-3">Prioridade: </label>
+                                    <select class="custom-select" name="id_prioridade">
+                                            <option value="0">Selecione uma Prioridade</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label for="perfil col-md-3">Abrir para departamento: </label>
+                                    <select class="custom-select" id="deptos" name="id_depto_atribuido">
+                                            <option value="0">Selecione um Departamento</option>                                 
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row form-group">                            
+                                <div class="col-md-12">
+                                    <label for="perfil col-md-3">Assunto: </label>
+                                    <select class="custom-select" id="assuntos" name="id_assunto">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="descricao">Interação:</label>
+                                <textarea class="form-control" style="height:200px;" name="descricao_problema" id="message-text"></textarea>
+                            </div>
+                            <div class=" form-group">                            
+                                <button class="btn btn-primary btn-md" type="submit">Salvar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </main>
