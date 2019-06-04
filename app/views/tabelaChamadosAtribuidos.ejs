@@ -21,7 +21,7 @@
                 <td><%= chamados[key].usuario_abertura_chamado.nome %></td>
                 <td><%= chamados[key].assunto_chamado.nome %></td>
                 <td>
-                    <a href="#" ><img src="/icons/visualizar.png" alt=""></a>
+                    <a href="/chamados/interacao/<%= chamados[key].id %>"><img src="/icons/atribuir.png" title="Abrir chamado" alt=""></a>
                 </td>
                 </tr>
             <%}%>

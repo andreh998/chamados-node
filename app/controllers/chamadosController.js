@@ -6,7 +6,7 @@ module.exports.index = function(application, req, res){
     var Assunto = application.config.database.models.Assunto;
     var Usuario = application.config.database.models.Usuario;
     var Departamento = application.config.database.models.Departamento;
-    Chamado.buscarPorIdDepto(id_depto_atribuido, Prioridade, Status, Assunto, Usuario, Departamento)
+    Chamado.buscarPorIdDeptoSemAtribuicao(id_depto_atribuido, Prioridade, Status, Assunto, Usuario, Departamento)
     .then(chamados => {
         res.render('chamados', {chamados: chamados});
     }). catch(err => {
@@ -167,6 +167,10 @@ module.exports.buscarAtribuidos = function(application, req, res){
 module.exports.interacaoChamado = function(application, req, res){
     var id_chamado = req.params.id;
     var id_usuario_atribuido = req.session.usuario.id;
+
+    /*BUSCAR DESCRICAO, ORIGEM, DESTINO, SOLICITANTE...*/
+    /*BUSCAR INTERAÇÕES*/
+    /*TORNA O CHAMADO ATRIBUÍDO AO USUÁRIO SOMENTE DEPOIS DE SALVAR A INTERACAO*/
 
     res.render('interacaoChamados', {numero: id_chamado});
 }

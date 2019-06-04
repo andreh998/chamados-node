@@ -63,7 +63,7 @@
             </div>
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row col-md-12">
                         Descrição do chamado.
                     </div>
                 </div>
@@ -77,7 +77,11 @@
             </div>
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row col-md-12">
+                        André Hoffmann respondeu em 26/02/2018 11:25:00
+                    </div>
+                    <hr>
+                    <div class="row col-md-12">
                         Interação 1.
                     </div>
                 </div>
@@ -85,7 +89,11 @@
             <br>
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row col-md-12">
+                        André Hoffmann respondeu em 27/02/2018 15:40:00
+                    </div>
+                    <hr>
+                    <div class="row col-md-12">
                         Interação 2.
                     </div>
                 </div>
@@ -132,6 +140,16 @@
                                 <label for="descricao">Interação:</label>
                                 <textarea class="form-control" style="height:200px;" name="descricao_problema" id="message-text"></textarea>
                             </div>
+                            <div class="form-group">
+                                <label for="descricao">Incluir Anexo:</label>
+                                <div class="custom-file">
+                                    <div class="col-md-6">
+                                        <input type="file" class="custom-file-input" id="arquivo">
+                                        <label class="custom-file-label" for="customFile">Escolha um arquivo</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                             <div class=" form-group">                            
                                 <button class="btn btn-primary btn-md" type="submit">Salvar</button>
                             </div>
