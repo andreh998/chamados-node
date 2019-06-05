@@ -83,6 +83,11 @@ module.exports = (sequelize, DataType) => {
             as: 'prioridade_chamado',
             foreignKey: 'id_prioridade'
         });
+
+        Chamado.hasMany(models.Interacao, {
+            as: 'interacoes_chamado',
+            foreignKey: 'id_chamado'
+        });
     };
 
     Chamado.adicionar = (titulo, descricao_problema, id_usuario_abertura, id_prioridade, id_depto_atribuido, id_assunto, id_status) => {
@@ -94,6 +99,49 @@ module.exports = (sequelize, DataType) => {
             id_usuario_abertura: id_usuario_abertura,
             id_depto_atribuido: id_depto_atribuido,
             id_assunto: id_assunto
+        });
+    };
+
+    Chamado.alterar = (id_chamado, id_usuario_abertura, id_usuario_atribuido, id_prioridade, id_depto_atribuido, id_assunto, id_status) => {
+        return Chamado.update({
+            id_status: id_status,
+            id_prioridade: id_prioridade,
+            id_usuario_abertura: id_usuario_abertura,
+            id_usuario_atribuido: id_usuario_atribuido,
+            id_depto_atribuido: id_depto_atribuido,
+            id_assunto: id_assunto
+        }, {
+            where: {
+                id: id_chamado
+            }
+        });
+    };
+
+    Chamado.buscarPorId = (id, Prioridade, Status, Assunto, Usuario, Departamento) => {
+        return Chamado.findAll({
+            where: {
+                id: id
+            },
+            include:[{
+                model: Prioridade,
+                as: 'prioridade_chamado'            
+            },{
+                model: Status,
+                as: 'status_chamado'            
+            },{
+                model: Assunto,
+                as: 'assunto_chamado'            
+            },{
+                model: Usuario,
+                as: 'usuario_abertura_chamado',
+                include: {
+                    model: Departamento,
+                    as: 'depto_usuario'
+                }           
+            },{
+                model: Departamento,
+                as: 'chamado_departamento'            
+            }]
         });
     };
 

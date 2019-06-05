@@ -18,7 +18,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5><b>Chamado #<%= numero %></b></h5>
+                    <h5><b>Chamado #<%= chamado[0].id %></b></h5>
                 </div>
             </div>
 
@@ -28,26 +28,26 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
-                                    Origem: <b>departamento de TI</b>
+                                    Origem: <b><%= chamado[0].usuario_abertura_chamado.depto_usuario.nome %></b>
                                 </div>                                
                                 <div class="col-md-6">
-                                    Solicitante: <b>André</b>
+                                    Solicitante: <b><%= chamado[0].usuario_abertura_chamado.nome %></b>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    Destino: <b>Setor Administrativo</b>                                   
+                                    Destino: <b><%= chamado[0].chamado_departamento.nome %></b>                                   
                                 </div>                                
                                 <div class="col-md-6">
-                                    Aberto em: <b>25/02/2018 13:30:00</b>
+                                    Aberto em: <b><%= chamado[0].data_abertura %></b>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    Assunto: <b>Pagar os boletos</b>                               
+                                    Assunto: <b><%= chamado[0].assunto_chamado.nome %></b>                               
                                 </div>                                
                                 <div class="col-md-6">
-                                    Status atual: <b>Andamento</b>
+                                    Status atual: <b><%= chamado[0].status_chamado.nome %></b>
                                 </div>
                             </div>
                         </div>
@@ -64,42 +64,33 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row col-md-12">
-                        Descrição do chamado.
+                        <%= chamado[0].descricao_problema %>
                     </div>
                 </div>
             </div> 
             <br>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <h5><b>Interações:</b></h5>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row col-md-12">
-                        André Hoffmann respondeu em 26/02/2018 11:25:00
-                    </div>
-                    <hr>
-                    <div class="row col-md-12">
-                        Interação 1.
+            <%if(interacoes != ''){%>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5><b>Interações:</b></h5>
                     </div>
                 </div>
-            </div>
-            <br>
-            <div class="card">
-                <div class="card-body">
-                    <div class="row col-md-12">
-                        André Hoffmann respondeu em 27/02/2018 15:40:00
-                    </div>
-                    <hr>
-                    <div class="row col-md-12">
-                        Interação 2.
+                <%for(key in interacoes){%>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row col-md-12">
+                            <%= interacoes[key].usuario_interacao.nome %> respondeu em <%= interacoes[key].data_interacao %>
+                        </div>
+                        <hr>
+                        <div class="row col-md-12">
+                            <%= interacoes[key].interacao %>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <br>
-            
+                <br>
+                <%}%>
+            <%}%>
             <div class="row">
                 <div class="col-md-6">
                     <h5><b>Responder:</b></h5>
@@ -107,56 +98,72 @@
             </div>
             <div class="card">
                 <div class="card-body">
-                    <div class="row col-md-12">
-                        <form action="" method="post">
-                            <div class="row">
-                                <div class="col-md-4 form-group">
-                                    <label for="perfil col-md-3">Status: </label>
-                                    <select class="custom-select" name="id_status"">
-                                            <option value="0">Selecione um Status</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label for="perfil col-md-3">Prioridade: </label>
-                                    <select class="custom-select" name="id_prioridade">
-                                            <option value="0">Selecione uma Prioridade</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 form-group">
-                                    <label for="perfil col-md-3">Abrir para departamento: </label>
-                                    <select class="custom-select" id="deptos" name="id_depto_atribuido">
-                                            <option value="0">Selecione um Departamento</option>                                 
-                                    </select>
+                    <form action="/chamados/interacao/<%= chamado[0].id %>/salvar" method="post">
+                        <!--<input type="hidden" name="id_chamado" id="id_chamado" value="<%= chamado[0].id %>" class="form-control">-->
+                        <div class="row">
+                            <div class="col-md-4 form-group">                                
+                                <label for="perfil">Status: </label>
+                                <select class="custom-select" name="id_status"">
+                                    <option value="<%= chamado[0].status_chamado.id %>"> <%= chamado[0].status_chamado.nome %> </option>
+                                    <%for(key in status){%>
+                                        <%if(status[key].id != chamado[0].status_chamado.id){%>
+                                            <option value="<%= status[key].id %>"> <%= status[key].nome %> </option>
+                                        <%}%>
+                                    <%}%>
+                                </select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="perfil">Prioridade: </label>
+                                <select class="custom-select" name="id_prioridade">
+                                    <option value="<%= chamado[0].prioridade_chamado.id %>"> <%= chamado[0].prioridade_chamado.nome %> </option>
+                                    <%for(key in prioridades){%>
+                                        <%if(prioridades[key].id != chamado[0].prioridade_chamado.id){%>
+                                            <option value="<%= prioridades[key].id %>"> <%= prioridades[key].nome %> </option>
+                                        <%}%>
+                                    <%}%>
+                                </select>
+                            </div>
+                            <div class="col-md-4 form-group">
+                                <label for="perfil">Abrir para departamento: </label>
+                                <select class="custom-select" id="deptos" name="id_depto_atribuido">
+                                    <option value="<%= chamado[0].chamado_departamento.id %>"> <%= chamado[0].chamado_departamento.nome %> </option>                                 
+                                    <%for(key in departamentos){%>
+                                        <%if(departamentos[key].id != chamado[0].chamado_departamento.id){%>
+                                            <option value="<%= departamentos[key].id %>"> <%= departamentos[key].nome %> </option>
+                                        <%}%>
+                                    <%}%>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row form-group">                            
+                            <div class="col-md-12">
+                                <label for="perfil">Assunto: </label>
+                                <select class="custom-select" id="assuntos" name="id_assunto">
+                                    <option value="<%= chamado[0].assunto_chamado.id %>"> <%= chamado[0].assunto_chamado.nome %> </option>                                 
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="descricao">Interação:</label>
+                            <textarea class="form-control" style="height:200px;" name="interacao" id="message-text"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="descricao">Incluir Anexo:</label>
+                            <div class="custom-file">
+                                <div class="col-md-6">
+                                    <input type="file" class="custom-file-input" id="arquivo">
+                                    <label class="custom-file-label" for="customFile">Escolha um arquivo</label>
                                 </div>
                             </div>
-                            <div class="row form-group">                            
-                                <div class="col-md-12">
-                                    <label for="perfil col-md-3">Assunto: </label>
-                                    <select class="custom-select" id="assuntos" name="id_assunto">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="descricao">Interação:</label>
-                                <textarea class="form-control" style="height:200px;" name="descricao_problema" id="message-text"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="descricao">Incluir Anexo:</label>
-                                <div class="custom-file">
-                                    <div class="col-md-6">
-                                        <input type="file" class="custom-file-input" id="arquivo">
-                                        <label class="custom-file-label" for="customFile">Escolha um arquivo</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
-                            <div class=" form-group">                            
-                                <button class="btn btn-primary btn-md" type="submit">Salvar</button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <br>
+                        <div class="form-group">                            
+                            <button class="btn btn-primary btn-md" type="submit">Salvar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
+            <br>
 
         </div>
 
@@ -167,6 +174,25 @@
 </body>
 
 <script src="/js/jquery-3.4.1.slim.js"></script>
+<script src="/js/jquery-3.4.1.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-
+<!--Função para carregar os Assuntos conforme o Departamento escolhido-->
+<script>
+    $(function(){     
+        $("#deptos").on('change', function(){
+            var id = $("#deptos").val();
+            $.ajax({
+                url: '/chamados/assuntos/buscar',
+                type: 'POST',
+                data: { id },
+                success: function (data) {
+                    $('#assuntos').empty();
+                    for (var i = 0; i < data.length; i++) {
+                        $('#assuntos').append('<option value="' + data[i].id + '">' + data[i].nome + "</option>");
+                    };
+                }
+            });
+        });    
+    });
+</script>
 </html>

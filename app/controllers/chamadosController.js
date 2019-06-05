@@ -166,11 +166,39 @@ module.exports.buscarAtribuidos = function(application, req, res){
 
 module.exports.interacaoChamado = function(application, req, res){
     var id_chamado = req.params.id;
-    var id_usuario_atribuido = req.session.usuario.id;
 
-    /*BUSCAR DESCRICAO, ORIGEM, DESTINO, SOLICITANTE...*/
-    /*BUSCAR INTERAÇÕES*/
-    /*TORNA O CHAMADO ATRIBUÍDO AO USUÁRIO SOMENTE DEPOIS DE SALVAR A INTERACAO*/
+    var Chamado = application.config.database.models.Chamado;
+    var Prioridade = application.config.database.models.Prioridade;
+    var Status = application.config.database.models.Status;
+    var Assunto = application.config.database.models.Assunto;
+    var Usuario = application.config.database.models.Usuario;
+    var Departamento = application.config.database.models.Departamento;
+    var Interacao = application.config.database.models.Interacao;
 
-    res.render('interacaoChamados', {numero: id_chamado});
+    var chamado = Chamado.buscarPorId(id_chamado, Prioridade, Status, Assunto, Usuario, Departamento);
+    var status = Status.buscarTodos();
+    var prioridades = Prioridade.buscarTodos();
+    var departamentos = Departamento.buscarTodos();
+    var interacoes = Interacao.buscarPorIdChamado(id_chamado);
+
+    /** enviar para a tela a data formatada */
+
+    Promise.all([chamado, status, prioridades, departamentos, interacoes]).then(results => {
+        res.render('interacaoChamados', {chamado: results[0], status: results[1], prioridades: results[2], departamentos: results[3], interacoes: results[4]});
+    }). catch(err => {
+        console.log(err);
+        return;
+    });
+    
 }
+
+module.exports.salvarInteracao = function(application, req, res){
+    var interacao = req.body;
+    var id_chamado = req.params.id;
+
+    /** VERIFICAR SE CHAMADO JÁ TEM USUARIO ATRIBUIDO, SENÃO ATRIBUIR.. */
+    /** ADICIONAR INTERACAO */
+
+    res.redirect('/chamados/interacao/'+id_chamado);
+}
+

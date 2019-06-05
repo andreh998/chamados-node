@@ -31,4 +31,8 @@ module.exports = function(application){
         application.app.controllers.chamadosController.buscarAtribuidos(application, req, res);
     });
 
+    application.post('/chamados/interacao/:id/salvar', verificaToken, function(req, res){
+        application.app.controllers.chamadosController.salvarInteracao(application, req, res);
+    });
+
 }
