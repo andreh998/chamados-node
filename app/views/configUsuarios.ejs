@@ -51,8 +51,8 @@
                                 <td><%= usuarios[key].nome %></td>
                                 <td><%= usuarios[key].login %></td>
                                 <td><%= usuarios[key].email %></td>
-                                <td><%= usuarios[key].id_perfil %></td>
-                                <td><%= usuarios[key].id_depto %></td>
+                                <td><%= usuarios[key].perfil_usuario.nome %></td>
+                                <td><%= usuarios[key].depto_usuario.nome %></td>
                                 <td><%= usuarios[key].ativo %></td>
                                 <td> <a href="/config/usuarios/alterar/<%= usuarios[key].id %>"><img src="/icons/icons8-direita-30.png" alt=""></a> </td>
                             </tr>

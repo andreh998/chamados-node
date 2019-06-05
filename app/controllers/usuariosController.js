@@ -1,7 +1,10 @@
 module.exports.index = function(application, req, res){
 
     var Usuario = application.config.database.models.Usuario;
-    Usuario.buscarTodos()
+    var Perfil = application.config.database.models.Perfil;
+    var Departamento = application.config.database.models.Departamento;
+
+    Usuario.buscarTodos(Perfil, Departamento)
     .then(usuarios => {
         res.render('configUsuarios', {usuarios: usuarios});
     }).catch(err => {

@@ -80,8 +80,18 @@ module.exports = (sequelize, DataType) => {
         });
     };
 
-    Usuario.buscarTodos = () => {
-        return Usuario.findAll();
+    Usuario.buscarTodos = (Perfil, Departamento) => {
+        return Usuario.findAll({
+            include: [
+                {
+                    model: Perfil,
+                    as: 'perfil_usuario'
+                }, {
+                    model: Departamento,
+                    as: 'depto_usuario'
+                }
+            ]
+        });
     };
 
     Usuario.buscarPorLogin = (login) => {
