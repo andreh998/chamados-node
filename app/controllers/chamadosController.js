@@ -147,7 +147,7 @@ module.exports.buscarMeus = function(application, req, res){
 }
 
 module.exports.buscarAtribuidos = function(application, req, res){
-    var id_usuario_abertura = req.session.usuario.id;
+    var id_usuario_atribuido = req.session.usuario.id;
     var Chamado = application.config.database.models.Chamado;
     var Prioridade = application.config.database.models.Prioridade;
     var Status = application.config.database.models.Status;
@@ -155,7 +155,7 @@ module.exports.buscarAtribuidos = function(application, req, res){
     var Usuario = application.config.database.models.Usuario;
     var Departamento = application.config.database.models.Departamento;
 
-    Chamado.buscarPorIdUsuarioAtribuido(id_usuario_abertura, Prioridade, Status, Assunto, Usuario, Departamento)
+    Chamado.buscarPorIdUsuarioAtribuido(id_usuario_atribuido, Prioridade, Status, Assunto, Usuario, Departamento)
     .then(chamados => {
         res.render('tabelaChamadosAtribuidos', {chamados: chamados});
     }).catch(err =>{
@@ -179,7 +179,7 @@ module.exports.interacaoChamado = function(application, req, res){
     var status = Status.buscarTodos();
     var prioridades = Prioridade.buscarTodos();
     var departamentos = Departamento.buscarTodos();
-    var interacoes = Interacao.buscarPorIdChamado(id_chamado);
+    var interacoes = Interacao.buscarPorIdChamado(id_chamado, Usuario);
 
     /** enviar para a tela a data formatada */
 
@@ -195,10 +195,38 @@ module.exports.interacaoChamado = function(application, req, res){
 module.exports.salvarInteracao = function(application, req, res){
     var interacao = req.body;
     var id_chamado = req.params.id;
+    
+    var Chamado = application.config.database.models.Chamado;
 
-    /** VERIFICAR SE CHAMADO JÁ TEM USUARIO ATRIBUIDO, SENÃO ATRIBUIR.. */
-    /** ADICIONAR INTERACAO */
+    /** atribuí o chamado ao usuário caso o chamado não tenha atribuição */
+    if(interacao.id_usuario_atribuido == '' || interacao.id_usuario_atribuido == null){
+        Chamado.alterarResponsavel(id_chamado, req.session.usuario.id)
+        .then(result => {
+            console.log('Chamado atribuído');
+        }). catch(err => {
+            console.log(err);
+            return;
+        });
+    }
 
-    res.redirect('/chamados/interacao/'+id_chamado);
+    /** Altera as demais informações do chamado, como: status, departamento, assunto ou prioridade */
+    Chamado.alterar(id_chamado, interacao.id_prioridade, interacao.id_depto_atribuido, 
+        interacao.id_assunto, interacao.id_status)
+    .then(result => {
+        console.log('Chamado alterado');
+    }). catch(err => {
+        console.log(err);
+        return;
+    })
+
+    /** Adiciona interação ao chamado */
+    var Interacao = application.config.database.models.Interacao;
+    Interacao.adicionar(interacao.interacao, id_chamado, req.session.usuario.id)
+    .then(result =>{
+        res.redirect('/chamados/interacao/'+id_chamado);
+    }).catch(err => {
+        console.log(err);
+        return;
+    });    
 }
 

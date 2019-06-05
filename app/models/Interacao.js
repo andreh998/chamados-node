@@ -37,10 +37,13 @@ module.exports = (sequelize, DataType) => {
         });
     };
 
-    Interacao.buscarPorIdChamado = (id_chamado) => {
+    Interacao.buscarPorIdChamado = (id_chamado, Usuario) => {
         return Interacao.findAll({
             where: {
                 id_chamado: id_chamado
+            }, include: {
+                model: Usuario,
+                as: 'usuario_interacao'
             }
         });
     };

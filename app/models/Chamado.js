@@ -102,14 +102,22 @@ module.exports = (sequelize, DataType) => {
         });
     };
 
-    Chamado.alterar = (id_chamado, id_usuario_abertura, id_usuario_atribuido, id_prioridade, id_depto_atribuido, id_assunto, id_status) => {
+    Chamado.alterar = (id_chamado, id_prioridade, id_depto_atribuido, id_assunto, id_status) => {
         return Chamado.update({
             id_status: id_status,
             id_prioridade: id_prioridade,
-            id_usuario_abertura: id_usuario_abertura,
-            id_usuario_atribuido: id_usuario_atribuido,
             id_depto_atribuido: id_depto_atribuido,
             id_assunto: id_assunto
+        }, {
+            where: {
+                id: id_chamado
+            }
+        });
+    };
+
+    Chamado.alterarResponsavel = (id_chamado, id_usuario_atribuido) => {
+        return Chamado.update({
+            id_usuario_atribuido: id_usuario_atribuido,
         }, {
             where: {
                 id: id_chamado

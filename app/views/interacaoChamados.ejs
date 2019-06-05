@@ -99,7 +99,7 @@
             <div class="card">
                 <div class="card-body">
                     <form action="/chamados/interacao/<%= chamado[0].id %>/salvar" method="post">
-                        <!--<input type="hidden" name="id_chamado" id="id_chamado" value="<%= chamado[0].id %>" class="form-control">-->
+                        <input type="hidden" name="id_usuario_atribuido" id="id_usuario_atribuido" value="<%= chamado[0].id_usuario_atribuido %>" class="form-control">
                         <div class="row">
                             <div class="col-md-4 form-group">                                
                                 <label for="perfil">Status: </label>
