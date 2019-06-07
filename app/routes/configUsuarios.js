@@ -3,7 +3,7 @@
 module.exports = function(application){
     var verificaToken = application.app.controllers.tokenController;
 
-    application.get('/config/usuarios', verificaToken, function(req, res){
+    application.get('/config/usuarios/:pagina', verificaToken, function(req, res){
         application.app.controllers.usuariosController.index(application, req, res);
     });
 

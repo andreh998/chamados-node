@@ -94,6 +94,26 @@ module.exports = (sequelize, DataType) => {
         });
     };
 
+    Usuario.buscarContagem = () =>{
+        return Usuario.findAndCountAll();
+    };
+
+    Usuario.buscarTodosPaginacao = (Perfil, Departamento, limite, offset) => {
+        return Usuario.findAll({
+            limit: limite,
+            offset: offset,
+            include: [
+                {
+                    model: Perfil,
+                    as: 'perfil_usuario'
+                }, {
+                    model: Departamento,
+                    as: 'depto_usuario'
+                }
+            ]
+        });
+    };
+
     Usuario.buscarPorLogin = (login) => {
         return Usuario.findAll({
             where: {

@@ -61,6 +61,25 @@
                     </table>
                 </div>
             </div>
+            <div class="row">
+                <nav class="col-md-12" aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <%if(parseInt(paginaAtual) > 1) {%>
+                            <li class="page-item">
+                                <a class="page-link" href="/config/usuarios/<%= (parseInt(paginaAtual)-1) %>" tabindex="-1">Anterior</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="/config/usuarios/<%= (parseInt(paginaAtual)-1) %>">  <%= (parseInt(paginaAtual)- 1) %> </a></li>
+                        <%}%>
+                        <li class="active page-item"><a class="page-link" href="/config/usuarios/<%= parseInt(paginaAtual) %>"> <%= parseInt(paginaAtual) %> </a></li>
+                        <%if(parseInt(paginaAtual) < parseInt(paginas)) {%>
+                            <li class="page-item"><a class="page-link" href="/config/usuarios/<%= (parseInt(paginaAtual)+1) %>">  <%= (parseInt(paginaAtual)+ 1) %> </a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="/config/usuarios/<%= (parseInt(paginaAtual)+1) %>">Próximo</a>
+                            </li>
+                        <%}%>                
+                    </ul>
+                </nav>
+            </div>
         </div>
     </main>
     

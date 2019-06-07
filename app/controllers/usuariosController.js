@@ -4,11 +4,33 @@ module.exports.index = function(application, req, res){
     var Perfil = application.config.database.models.Perfil;
     var Departamento = application.config.database.models.Departamento;
 
-    Usuario.buscarTodos(Perfil, Departamento)
-    .then(usuarios => {
-        res.render('configUsuarios', {usuarios: usuarios});
+    let limite = 5;
+    let offset = 0;
+
+    Usuario.buscarContagem()
+    .then(data => {
+        let pagina = req.params.pagina;
+        let paginas = Math.ceil(data.count / limite);
+        offset = limite * (pagina - 1);
+        
+        if(pagina > paginas){
+            /**
+             * se o numero da pagina da request for maior que o número existe, 
+             * direciona pra página 1
+             */
+            res.redirect('/config/usuarios/1');
+        }
+
+        Usuario.buscarTodosPaginacao(Perfil, Departamento, limite, offset)
+        .then(usuarios => {
+            res.render('configUsuarios', {usuarios: usuarios, paginaAtual: pagina, paginas: paginas});
+        }).catch(err => {
+            console.log(err);
+            return;
+        });
+        
     }).catch(err => {
-        console.log(err);
+        console.log('erro ao buscar usuarios: ' + err);
         return;
     });
     
@@ -70,7 +92,7 @@ module.exports.validar = function(application, req, res){
     if(usuario.id == '' || usuario.id == null){
         Usuario.adicionar(usuario.nome, usuario.cpf, usuario.email, usuario.login, senhaCriptada, usuario.ativo, usuario.id_perfil, usuario.id_depto)
         .then(result => {
-            res.redirect('/config/usuarios');
+            res.redirect('/config/usuarios/1');
         }).catch(err => {
             console.log(err); 
         });
@@ -78,7 +100,7 @@ module.exports.validar = function(application, req, res){
     } else if(usuario.id != '' || usuario.id > 0){
         Usuario.alterar(usuario.id, usuario.nome, usuario.cpf, usuario.email, usuario.login, senhaCriptada, usuario.ativo, usuario.id_perfil, usuario.id_depto)
         .then(result => {
-            res.redirect('/config/usuarios');
+            res.redirect('/config/usuarios/1');
         }).catch(err => {
             console.log(err); 
         });
