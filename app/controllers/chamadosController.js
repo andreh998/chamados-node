@@ -109,7 +109,7 @@ module.exports.buscarAssuntos = function(application, req, res){
     }).catch(err =>{
         console.log(err);
         return;
-    });    
+    });
     
 }
 
@@ -120,7 +120,25 @@ module.exports.gravarChamado = function(application, req, res){
     var Chamado = application.config.database.models.Chamado;
     Chamado.adicionar(chamado.titulo, chamado.descricao_problema, chamado.id_usuario_abertura, chamado.id_prioridade, chamado.id_depto_atribuido, chamado.id_assunto, chamado.id_status)
     .then(result => {
+        //console.log(result.id);
+
+        if(req.files){
+            var arquivos = req.files;
+            var Anexo = application.config.database.models.Anexo;
+            for(key in arquivos){
+                var caminho_statico = '/anexos/' + arquivos[key].filename
+                Anexo.adicionar(result.id, arquivos[key].filename, arquivos[key].path, caminho_statico)
+                .then(result => {
+                    console.log('anexo salvo');
+                }).catch(err => {
+                    console.log(err);
+                });
+            };
+            
+        }
+
         res.redirect('/chamados');
+
     }).catch(err => {
         console.log(err);
         return;

@@ -1,5 +1,19 @@
 
 module.exports = function(application){
+
+    const multer = require('multer');
+
+    const storage = multer.diskStorage({
+        destination: (req, file, callback) => {
+            callback(null, 'app/public/anexos');
+        },
+        filename: (req, file, callback) => {
+            //var ext = file.originalname.substr(file.originalname.lastIndexOf('.') + 1);
+            callback(null, file.originalname);
+        }
+    });
+    const upload = multer({storage});
+
     //carrego a funcao que vrifica o token na variavel verificaToken
     var verificaToken = application.app.controllers.tokenController;
 
@@ -15,7 +29,7 @@ module.exports = function(application){
         application.app.controllers.chamadosController.buscarAssuntos(application, req, res);
     });
 
-    application.post('/chamados/novo/gravar', verificaToken, function(req, res){
+    application.post('/chamados/novo/gravar',upload.array('anexos', 5), verificaToken, function(req, res){        
         application.app.controllers.chamadosController.gravarChamado(application, req, res);
     });
 

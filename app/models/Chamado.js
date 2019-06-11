@@ -88,6 +88,11 @@ module.exports = (sequelize, DataType) => {
             as: 'interacoes_chamado',
             foreignKey: 'id_chamado'
         });
+
+        Chamado.hasMany(models.Anexo, {
+            as: 'anexo_chamado',
+            foreignKey: 'id_chamado'
+        });
     };
 
     Chamado.adicionar = (titulo, descricao_problema, id_usuario_abertura, id_prioridade, id_depto_atribuido, id_assunto, id_status) => {

@@ -81,7 +81,8 @@ CREATE TABLE IF NOT EXISTS anexos(
     id INT PRIMARY KEY AUTO_INCREMENT,
     id_chamado INT NOT NULL,
     nome_arquivo VARCHAR(255) NOT NULL,
-    caminho_arquivo VARCHAR(255) NOT NULL
+    caminho_arquivo VARCHAR(255) NOT NULL,
+    caminho_statico VARCHAR(255) NOT NULL
 );
 
 ALTER TABLE anexos ADD CONSTRAINT fk_anexos_chamados FOREIGN KEY (id_chamado) REFERENCES chamados (id) ON DELETE CASCADE;

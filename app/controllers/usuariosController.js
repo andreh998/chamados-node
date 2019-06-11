@@ -15,10 +15,10 @@ module.exports.index = function(application, req, res){
         
         if(pagina > paginas){
             /**
-             * se o numero da pagina da request for maior que o número existe, 
-             * direciona pra página 1
+             * se o número da pagina da request for maior que o número total de páginas, 
+             * direciona para a última página
              */
-            res.redirect('/config/usuarios/1');
+            res.redirect('/config/usuarios/'+paginas);
         }
 
         Usuario.buscarTodosPaginacao(Perfil, Departamento, limite, offset)
