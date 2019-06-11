@@ -80,6 +80,12 @@
                             </div>
                         </div>
                         <br>
+
+                        <div id="anexos-atuais" style="display:none" class="alert alert-primary" role="alert">
+                            
+                        </div>
+                        <br>
+
                         <div class=" form-group">                            
                             <button class="btn btn-primary btn-md" type="submit">Abrir</button>
                         </div>
@@ -115,6 +121,19 @@
             });
         });    
     });
+</script>
+
+<script>
+    $(function() {
+        $("#anexos").on("change", function(){
+            $("#anexos-atuais").empty();
+            var files = $("#anexos")[0].files;
+            for(var i = 0; i < files.length; i++){
+                $("#anexos-atuais").append( files[i].name + "<br>");
+            }
+            $("#anexos-atuais").show();
+        });
+    });   
 </script>
 
 </html>
