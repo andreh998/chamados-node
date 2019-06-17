@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS usuarios(
 );
 
 INSERT INTO usuarios (id_perfil, id_depto, nome, cpf, email, login, senha, ativo) VALUES 
-	(1, 1, 'André Hoffmann', '08535831967', 'andreh998@gmail.com', 'andre', 'andre@123', 'S');
+	(1, 1, 'André Hoffmann', '08535831967', 'andreh998@gmail.com', 'andre', '52b6723cf0a4ca500bcdc703aabc6d5d', 'S');
 
 ALTER TABLE usuarios ADD CONSTRAINT fk_usuario_perfil FOREIGN KEY (id_perfil) REFERENCES perfis (id) ON DELETE CASCADE;
 ALTER TABLE usuarios ADD CONSTRAINT fk_usuario_departamento FOREIGN KEY (id_depto) REFERENCES departamentos (id) ON DELETE CASCADE;
